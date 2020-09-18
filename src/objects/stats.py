@@ -1,0 +1,129 @@
+
+
+class resultsStats:
+
+    def __init__(self, collisionTable,lastHops ,numNodes,seedList,seed = 256,threshold = 0.9):
+        self.threshold = threshold
+        self.collsionTable = collisionTable
+        self.seed = seed
+        self.maxHop = max(lastHops[0:self.seed])
+
+        self.completeSeedList = seedList
+        self.numNodes = numNodes
+
+        self.totalCouples = self.totalCouples()
+        self.couplesPercentage = self.totalCouplesPercentage()
+
+        self.avgDistance = self.avgDistance()
+        self.lowerBoundDiameter = len(collisionTable.keys())-1
+
+        self.effectiveDiameter = self.effectiveDiameter()
+
+    def totalCouples(self):
+
+        overallCollsions = self.collsionTable[str(self.maxHop)][0:self.seed]
+
+        numTotalCollisions = sum(overallCollsions)
+        totalCouplesReachable = numTotalCollisions * self.numNodes / self.seed
+
+        return (totalCouplesReachable)
+
+
+    def totalCouplesPercentage(self):
+
+
+        couplesPercentage = self.totalCouples * self.threshold
+
+        return (couplesPercentage)
+
+    def avgDistance(self):
+        sumAvg = 0
+
+        for hop in range(0,self.maxHop):
+
+            collisions = self.collsionTable[str(hop)][0:self.seed]
+            totalCollisions = sum(collisions)
+            if(hop != 0):
+                previousHop = hop - 1
+                previousCollisions = self.collsionTable[str(previousHop)][0:self.seed]
+                previousTotalCollisions = sum(previousCollisions)
+                couplesReachable = totalCollisions * self.numNodes / self.seed
+                previousCouplesReachable = previousTotalCollisions * self.numNodes / self.seed
+                couplesReachableForHop = couplesReachable - previousCouplesReachable
+                sumAvg += hop*couplesReachableForHop
+
+        return(sumAvg/self.totalCouples)
+
+    def interpolate(self,y0,y1,y):
+        #(y1 - y0) is the delta neighbourhood
+        return (y - y0) / (y1 - y0)
+
+    #interpolate(mHopTable.get(d-1), mHopTable.get(d), mThreshold * numCollisions));
+
+    def effectiveDiameter(self):
+        if(len(self.collsionTable.values())==0):
+            return(0)
+        d = 1
+
+        numCollisions = sum(self.collsionTable[str(self.lowerBoundDiameter)][0:self.seed])
+
+        while(sum(self.collsionTable[str(d)][0:self.seed])/numCollisions < self.threshold):
+            d += 1
+
+
+        interpolation = self.interpolate(sum(self.collsionTable[str(d - 1)][0:self.seed]),sum(self.collsionTable[str(d)][0:self.seed]),numCollisions*self.threshold)
+
+        result = (d - 1) + interpolation
+
+
+        if (result < 0):
+            result = 0
+
+        return result
+
+    def printStats(self):
+        print("Avg distance ",self.avgDistance)
+        print("Total couples " ,self.totalCouples)
+        print("Total couples percentage ",self.couplesPercentage)
+        print("Lowerbound diameter ", self.lowerBoundDiameter)
+        print("Effective diameter ",self.effectiveDiameter)
+
+    def get_stats(self,additionalInfo = None):
+
+        if(additionalInfo!= None):
+            additionalInfo['avgDistance'] = self.avgDistance
+            additionalInfo['totalCouples'] = self.totalCouples
+            additionalInfo['totalCouplesPercentage'] = self.couplesPercentage
+            additionalInfo['lowerboundDiameter'] = self.lowerBoundDiameter
+            additionalInfo['effectiveDiameter'] = self.effectiveDiameter
+            additionalInfo['treshold'] = self.threshold
+            additionalInfo['numSeeds'] = self.seed
+            additionalInfo['seedsList'] = self.transform_seedlist(self.completeSeedList)
+        else:
+            additionalInfo ={
+                'avgDistance':self.avgDistance,
+                'totalCouples': self.totalCouples,
+                'totalCouplesPercentage':self.couplesPercentage,
+                'lowerboundDiameter': self.lowerBoundDiameter,
+                'effectiveDiameter':self.effectiveDiameter,
+                'treshold':self.threshold,
+                'numSeeds':self.seed,
+                'seedsList':self.transform_seedlist(self.completeSeedList)
+
+            }
+
+        return(additionalInfo)
+
+    def transform_seedlist(self,seedListString):
+        seedList = []
+
+        for seed in seedListString.split(","):
+            if(seed != ""):
+                seedList.append(seed)
+
+        newSeedList = ""
+
+        for seed in seedList[0:self.seed]:
+            newSeedList += seed
+            newSeedList += ","
+        return(newSeedList)

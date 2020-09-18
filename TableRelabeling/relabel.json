@@ -1,0 +1,20 @@
+{
+	"direction":"Message direction",
+	"seeds": "Seeds number",
+
+	"groundTruthAvgDistance": "Exact avg distance",
+	"sampleMeanAvgDistance": "Avg distance",
+	"residualAvgDistance":"Residual avg distance (p-val)",
+
+	"groundTruthEffectiveDiameter": "Exact eff diameter",
+	"sampleMeanEffectiveDiameter": "Eff diameter",
+	"residualEffectiveDiameter":"Residual eff diameter (p-val)",
+
+	"groundTruthLowerBoundDiameter": "Exact diameter",
+	"sampleMeanLowerBoundDiameter": "Diameter",
+	"residualLowerBoundDiameter":"Residual diameter (p-val)",
+
+	"groundTruthTotalCouples": "Exact Nr. conn pairs",
+	"sampleMeanTotalCouples": "Nr. conn pairs",
+	"residualTotalCouples":"Residual Nr. conn pairs (p-val)"
+}
