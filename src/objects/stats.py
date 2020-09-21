@@ -1,4 +1,4 @@
-
+import numpy as np
 
 class resultsStats:
 
@@ -30,7 +30,6 @@ class resultsStats:
 
 
     def totalCouplesPercentage(self):
-
 
         couplesPercentage = self.totalCouples * self.threshold
 
@@ -70,9 +69,26 @@ class resultsStats:
         while(sum(self.collsionTable[str(d)][0:self.seed])/numCollisions < self.threshold):
             d += 1
 
+        collisionsD = sum(self.collsionTable[str(d)][0:self.seed])
 
-        interpolation = self.interpolate(sum(self.collsionTable[str(d - 1)][0:self.seed]),sum(self.collsionTable[str(d)][0:self.seed]),numCollisions*self.threshold)
+        previousCollisionsD = sum(self.collsionTable[str(d - 1)][0:self.seed])
 
+        couplesD = collisionsD * self.numNodes / self.seed
+
+        previousCouplesD = previousCollisionsD * self.numNodes / self.seed
+
+        # print("1:", sum(self.collsionTable[str(d - 1)][0:self.seed]))
+        # print("2:",sum(self.collsionTable[str(d)][0:self.seed]))
+        # print("3:",numCollisions*self.threshold)
+        # print("d-1",d-1)
+        # print("CD",couplesD)
+        # print("PCD",previousCouplesD)
+        # print("C%",self.couplesPercentage)
+
+
+
+        #interpolation = self.interpolate(sum(self.collsionTable[str(d - 1)][0:self.seed]),sum(self.collsionTable[str(d)][0:self.seed]),numCollisions*self.threshold)
+        interpolation = self.interpolate(previousCouplesD,couplesD,self.couplesPercentage)
         result = (d - 1) + interpolation
 
 
@@ -82,11 +98,14 @@ class resultsStats:
         return result
 
     def printStats(self):
-        print("Avg distance ",self.avgDistance)
-        print("Total couples " ,self.totalCouples)
-        print("Total couples percentage ",self.couplesPercentage)
+        print("----------- STATS -----------")
+        print("Seed number ", self.seed)
+        print("Avg distance %.20f" %self.avgDistance)
+        print("Total couples %.20f" %self.totalCouples)
+        print("Total couples percentage %.20f" %self.couplesPercentage)
         print("Lowerbound diameter ", self.lowerBoundDiameter)
-        print("Effective diameter ",self.effectiveDiameter)
+        print("Effective diameter %.20f" %self.effectiveDiameter)
+        print("-----------------------------")
 
     def get_stats(self,additionalInfo = None):
 
