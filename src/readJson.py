@@ -64,7 +64,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                 experiments[(algo,direction,seed,"lowerBoundDiameter")] = []
                 experiments[(algo,direction,seed,"totalCouples")] = []
                 experiments[(algo,direction,seed,"maxMemoryUsed")] = []
-                
+
 
     for elem in data:
 
@@ -348,7 +348,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                     newLabels = json.load(json_file)
             except IOError:
                 print('Error! Can not open '+ LabelPath)
-            print(head)
+            #print(head)
             header =[]
             for elem in head:
                 if(elem in newLabels.keys()):
