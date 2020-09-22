@@ -2,7 +2,7 @@ import json
 import sys, getopt
 from objects.stats import resultsStats
 
-def ValuesFromHopTable(InputPath,OutputPath,AdditionalInfoPath = None,SeedList = [256]):
+def ValuesFromCollisionTable(InputPath,OutputPath,AdditionalInfoPath = None,SeedList = [256]):
 
     try:
         with open(InputPath) as json_file:
@@ -56,7 +56,7 @@ def main(argv):
              seeds.append(int(seed))
    if(not seeds):
         seeds.append(256)
-   ValuesFromHopTable(inputfile,outputfile,additionalFile,SeedList=seeds)
+   ValuesFromCollisionTable(inputfile,outputfile,additionalFile,SeedList=seeds)
 
 
 if __name__ == "__main__":
