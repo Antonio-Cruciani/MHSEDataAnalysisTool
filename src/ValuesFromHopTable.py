@@ -54,7 +54,8 @@ def main(argv):
          splittedInput = arg.split(",")
          for seed in splittedInput:
              seeds.append(int(seed))
-
+   if(not seeds):
+        seeds.append(256)
    ValuesFromHopTable(inputfile,outputfile,additionalFile,SeedList=seeds)
 
 
