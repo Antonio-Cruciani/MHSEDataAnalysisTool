@@ -23,7 +23,7 @@ You can find our algorithm at the following [link](https://github.com/BigDataLab
 
 #### Algorithm output structure
 
-The algorithm outputs the following json:
+The algorithm outputs the following JSON:
 ```text
 {
   "collisionsTable" :
@@ -47,7 +47,7 @@ The algorithm outputs the following json:
   "hopTable" : 
 }
 ```
-If you execute the algorithm for more than one time, it will output a list of json:
+If you execute the algorithm more than once, it will output a list of JSON:
 ```text
 [{
   "collisionsTable" :
