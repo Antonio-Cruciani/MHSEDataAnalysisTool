@@ -4,10 +4,10 @@ class resultsStats:
 
     def __init__(self, collisionTable,lastHops ,numNodes,seedList,seed = 256,threshold = 0.9):
         self.threshold = threshold
-        self.collsionTable = collisionTable
+
         self.seed = seed
         self.maxHop = max(lastHops[0:self.seed])
-
+        self.collsionTable = self.lowerBoundDiameter(collisionTable)
         self.completeSeedList = seedList
         self.numNodes = numNodes
 
@@ -15,9 +15,17 @@ class resultsStats:
         self.couplesPercentage = self.totalCouplesPercentage()
 
         self.avgDistance = self.avgDistance()
-        self.lowerBoundDiameter = len(collisionTable.keys())-1
+        self.lowerBoundDiameter = len(self.collsionTable.keys())-1
 
         self.effectiveDiameter = self.effectiveDiameter()
+
+    def lowerBoundDiameter(self,collisionTable):
+        newCollisionTable = {}
+        #print(self.maxHop)
+        for hop in range(0,self.maxHop+1):
+            newCollisionTable[str(hop)] = collisionTable[str(hop)]
+            #print(hop)
+        return(newCollisionTable)
 
     def totalCouples(self):
 
