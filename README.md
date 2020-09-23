@@ -47,4 +47,27 @@ The algorithm outputs the following json:
   "hopTable" : 
 }
 ```
-If you execute the algorithm for more than one time, it will output a list of json.
+If you execute the algorithm for more than one time, it will output a list of json:
+```text
+[{
+  "collisionsTable" :
+  "minHashNodeIDs"  :
+  .
+  . 
+  .
+  "direction" : 
+  "hopTable" : 
+},{
+  "collisionsTable" :
+  "minHashNodeIDs"  :
+  .
+  . 
+  .
+  "direction" : 
+  "hopTable" : 
+},
+  .
+  . 
+  .
+]
+```
