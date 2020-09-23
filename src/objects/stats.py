@@ -113,7 +113,7 @@ class resultsStats:
             additionalInfo['avgDistance'] = self.avgDistance
             additionalInfo['totalCouples'] = self.totalCouples
             additionalInfo['totalCouplesPercentage'] = self.couplesPercentage
-            additionalInfo['lowerboundDiameter'] = self.lowerBoundDiameter
+            additionalInfo['lowerBoundDiameter'] = self.lowerBoundDiameter
             additionalInfo['effectiveDiameter'] = self.effectiveDiameter
             additionalInfo['treshold'] = self.threshold
             additionalInfo['numSeeds'] = self.seed
@@ -123,7 +123,7 @@ class resultsStats:
                 'avgDistance':self.avgDistance,
                 'totalCouples': self.totalCouples,
                 'totalCouplesPercentage':self.couplesPercentage,
-                'lowerboundDiameter': self.lowerBoundDiameter,
+                'lowerBoundDiameter': self.lowerBoundDiameter,
                 'effectiveDiameter':self.effectiveDiameter,
                 'treshold':self.threshold,
                 'numSeeds':self.seed,

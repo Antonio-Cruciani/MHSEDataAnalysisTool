@@ -56,8 +56,9 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
     # Building a dictionary entry for each type of simulation
 
     for algo in algo_list:
-        for seed in seed_list:
-            for direction in direction_list:
+
+        for direction in direction_list:
+            for seed in seed_list:
 
                 experiments[(algo,direction,seed,"avgDistance")] =[]
                 experiments[(algo,direction,seed,"effectiveDiameter")] = []
@@ -76,6 +77,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
 
 
     # Building a dictionary for the statistics
+
     for algo in algo_list:
         for direction in direction_list:
             for seed in seed_list:
@@ -83,15 +85,17 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
 
                 statistics[(algo,direction,seed)] = summary(algo,direction,seed)
 
-                statistics[(algo,direction,seed)].SampleMeans(experiments[(elem['algorithmName'],elem['direction'],elem['numSeeds'],"avgDistance")],experiments[(elem['algorithmName'],elem['direction'],elem['numSeeds'],"effectiveDiameter")],
-                                                            experiments[(elem['algorithmName'],elem['direction'],elem['numSeeds'],"lowerBoundDiameter")],
-                                                            experiments[(elem['algorithmName'],elem['direction'],elem['numSeeds'],"totalCouples")],experiments[(elem['algorithmName'],elem['direction'],elem['numSeeds'],"maxMemoryUsed")]
+                statistics[(algo,direction,seed)].SampleMeans(experiments[(algo,direction,seed,"avgDistance")],experiments[(algo,direction,seed,"effectiveDiameter")],
+                                                            experiments[(algo,direction,seed,"lowerBoundDiameter")],
+                                                            experiments[(algo,direction,seed,"totalCouples")],experiments[(algo,direction,seed,"maxMemoryUsed")]
                                                             )
+
                 results[(algo,direction,seed,"MeanAvgDistance")] = [statistics[(algo,direction,seed)].get_avgDistanceSampleMean()]
                 results[(algo,direction,seed,"MeanEffectiveDiameter")] = [statistics[(algo,direction,seed)].get_effectiveDiameterSampleMean()]
                 results[(algo,direction,seed,"MeanLowerBoundDiameter")] = [statistics[(algo,direction,seed)].get_lowerBoundDiameterSampleMean()]
                 results[(algo,direction,seed,"MeanTotalCouples")] = [statistics[(algo,direction,seed)].get_totalCouplesSampleMean()]
                 results[(algo,direction,seed,"MeanMaxMemoryUsed")] = [statistics[(algo,direction,seed)].get_maxMemoryUsedSampleMean()]
+
 
                 if(std):
 
@@ -132,12 +136,13 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                 # print("Sample Mean total couples  = ", results[(algo, direction, seed, "MeanTotalCouples")])
                 # print("Sample Mean MeanMaxMemoryUsed  = ", results[(algo, direction, seed, "MeanMaxMemoryUsed")])
     #writableJson = dict((':'.join(k), v) for k, v in results.items())
+
     if(dataframe):
         head = ["algo","direction","seeds"]
         if(std):
             if(GroundTruthPath):
                 if(Ttest):
-                    head.append(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance",
+                    head.extend(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance",
                 "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter","pValueEffectiveDiameter",
                 "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter","pValueLowerBoundDiameter",
                 "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples"])
@@ -172,7 +177,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                 ])
 
                 else:
-                    head.append(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance",
+                    head.extend(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance",
                 "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter",
                 "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter",
                 "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples"])
@@ -199,7 +204,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "residuals")]["totalCouples"]
                                 ])
             else:
-                head.append([ "sampleMeanAvgDistance", "stdAvgDistance", "residualAvgDistance",
+                head.extend([ "sampleMeanAvgDistance", "stdAvgDistance", "residualAvgDistance",
                               "sampleMeanEffectiveDiameter", "stdEffectiveDiameter",
                              "residualEffectiveDiameter",
                              "sampleMeanLowerBoundDiameter", "stdLowerBoundDiameter",
@@ -224,7 +229,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
         else:
             if (GroundTruthPath):
                 if (Ttest):
-                    head.append(
+                    head.extend(
                         ["groundTruthAvgDistance", "sampleMeanAvgDistance", "residualAvgDistance",
                          "pValueAvgDistance",
                          "groundTruthEffectiveDiameter", "sampleMeanEffectiveDiameter",
@@ -258,7 +263,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                 ])
 
                 else:
-                    head.append(
+                    head.extend(
                         ["groundTruthAvgDistance", "sampleMeanAvgDistance", "residualAvgDistance",
                          "groundTruthEffectiveDiameter", "sampleMeanEffectiveDiameter",
                          "residualEffectiveDiameter",
@@ -285,17 +290,19 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "residuals")]["totalCouples"]
                                 ])
             else:
-                head.append(["sampleMeanAvgDistance", "residualAvgDistance",
+                head.extend(["sampleMeanAvgDistance",
                              "sampleMeanEffectiveDiameter",
-                             "residualEffectiveDiameter",
+
                              "sampleMeanLowerBoundDiameter",
-                             "residualLowerBoundDiameter",
+
                              "sampleMeanTotalCouples",
-                             "residualTotalCouples"])
+                             ])
                 elements = []
+
                 for algo in algo_list:
                     for direction in direction_list:
                         for seed in seed_list:
+
                             elements.append([
                                 algo, direction, seed,
                                 results[(algo, direction, seed, "MeanAvgDistance")][0],
@@ -306,39 +313,40 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                             ])
 
 
-        # Building header
-        head = ["algo","direction","seeds",
-                "groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance",
-                "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter","pValueEffectiveDiameter",
-                "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter","pValueLowerBoundDiameter",
-                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples"
-                ]
-        elements = []
-        for algo in algo_list:
-            for direction in direction_list:
-                for seed in seed_list:
-                    if(std and Ttest):
-                        elements.append([
-                            algo,direction,seed,groundTruth['avgDistance'],results[(algo, direction, seed,"MeanAvgDistance")][0],results[(algo, direction, seed,"MeanAvgDistance")][1],results[(algo, direction, seed,"residuals")]["avgDistance"],results[(algo, direction, seed,"Ttest")]['avgDistance'][1],
-                            groundTruth['effectiveDiameter'],
-                            results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
-                            results[(algo, direction, seed, "MeanEffectiveDiameter")][1],
-                            results[(algo, direction, seed, "residuals")]["effectiveDiameter"],
-                            results[(algo, direction, seed, "Ttest")]['effectiveDiameter'][1],
+        # # Building header
+        # head = ["algo","direction","seeds",
+        #         "groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance",
+        #         "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter","pValueEffectiveDiameter",
+        #         "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter","pValueLowerBoundDiameter",
+        #         "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples"
+        #         ]
+        # elements = []
+        # for algo in algo_list:
+        #     for direction in direction_list:
+        #         for seed in seed_list:
+        #             if(std and Ttest):
+        #                 elements.append([
+        #                     algo,direction,seed,groundTruth['avgDistance'],results[(algo, direction, seed,"MeanAvgDistance")][0],results[(algo, direction, seed,"MeanAvgDistance")][1],results[(algo, direction, seed,"residuals")]["avgDistance"],results[(algo, direction, seed,"Ttest")]['avgDistance'][1],
+        #                     groundTruth['effectiveDiameter'],
+        #                     results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
+        #                     results[(algo, direction, seed, "MeanEffectiveDiameter")][1],
+        #                     results[(algo, direction, seed, "residuals")]["effectiveDiameter"],
+        #                     results[(algo, direction, seed, "Ttest")]['effectiveDiameter'][1],
+        #
+        #                     groundTruth['lowerBoundDiameter'],
+        #                     results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
+        #                     results[(algo, direction, seed, "MeanLowerBoundDiameter")][1],
+        #                     results[(algo, direction, seed, "residuals")]["lowerBoundDiameter"],
+        #                     results[(algo, direction, seed, "Ttest")]['lowerBoundDiameter'][1],
+        #
+        #                     groundTruth['totalCouples'],
+        #                     results[(algo, direction, seed, "MeanTotalCouples")][0],
+        #                     results[(algo, direction, seed, "MeanTotalCouples")][1],
+        #                     results[(algo, direction, seed, "residuals")]["totalCouples"],
+        #                     results[(algo, direction, seed, "Ttest")]['totalCouples'][1]
+        #
+        #                 ])
 
-                            groundTruth['lowerBoundDiameter'],
-                            results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
-                            results[(algo, direction, seed, "MeanLowerBoundDiameter")][1],
-                            results[(algo, direction, seed, "residuals")]["lowerBoundDiameter"],
-                            results[(algo, direction, seed, "Ttest")]['lowerBoundDiameter'][1],
-
-                            groundTruth['totalCouples'],
-                            results[(algo, direction, seed, "MeanTotalCouples")][0],
-                            results[(algo, direction, seed, "MeanTotalCouples")][1],
-                            results[(algo, direction, seed, "residuals")]["totalCouples"],
-                            results[(algo, direction, seed, "Ttest")]['totalCouples'][1]
-
-                        ])
         df = pd.DataFrame(elements,columns=head)
         df.to_csv(OutputPath+'.csv')
 
