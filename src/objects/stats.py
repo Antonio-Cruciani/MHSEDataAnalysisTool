@@ -46,7 +46,7 @@ class resultsStats:
     def avgDistance(self):
         sumAvg = 0
 
-        for hop in range(0,self.maxHop):
+        for hop in range(0,self.maxHop+1):
 
             collisions = self.collsionTable[str(hop)][0:self.seed]
             totalCollisions = sum(collisions)
