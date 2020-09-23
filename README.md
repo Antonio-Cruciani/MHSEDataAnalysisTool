@@ -24,18 +24,18 @@ You can find our algorithm at the following [link](https://github.com/BigDataLab
 #### Algorithm output structure
 
 The algorithm outputs the following json:
-```json
+```text
 {
-  "collisionsTable": {"0" : [ 1, 1, 1, 1, 1, ..... },
-  "minHashNodeIDs" : 
-  "numSeeds" : 
-  "numNodes" : 
-  "numArcs" : 
-  "seedsTime" : 
+  "collisionsTable" :
+  "minHashNodeIDs"  :
+  "numSeeds" :
+  "numNodes"  :
+  "numArcs"  :
+  "seedsTime" :  
   "lastHops" :
-  "time" : 
-  "lowerBoundDiameter" : 
-  "totalCouples" : 
+  "time" :
+  "lowerBoundDiameter" :  
+  "totalCouples" :
   "totalCouplePercentage" : 
   "avgDistance" : 
   "effectiveDiameter" : 
