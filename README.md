@@ -26,7 +26,7 @@ You can find our algorithm at the following [link](https://github.com/BigDataLab
 The algorithm outputs the following json:
 ```json
 {
-  "collisionsTable": {"0" : [ 1, 1, 1, 1, 1, ..... }
+  "collisionsTable": {"0" : [ 1, 1, 1, 1, 1, ..... },
   "minHashNodeIDs" : 
   "numSeeds" : 
   "numNodes" : 
