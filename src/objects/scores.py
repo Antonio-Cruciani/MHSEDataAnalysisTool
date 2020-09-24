@@ -185,7 +185,7 @@ class summary:
         self.TtestEffectiveDiameterAndEffectiveDiameterGT = resEffectiveDiameter.rx2('p.value')[0]
         self.TtestLowerBoundDiameterANDLowerBoundDiameterGT = resLowerBoundDiameter.rx2('p.value')[0]
         self.TtestTotalCouplesAndTotalCouplesGT = resTotalCouples.rx2('p.value')[0]
-        print(self.TtestAvgDistanceAndAvgDistanceGT )
+        #print(self.TtestAvgDistanceAndAvgDistanceGT )
         #st.t_test(self.avgDistance,self.avgDistanceGT,**{'var.equal': False,
         #                                                         'paired': False,''
         #                                                 'alternative':StrVector(("two.sided",))
