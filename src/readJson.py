@@ -155,24 +155,24 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "MeanAvgDistance")][0],
                                     results[(algo, direction, seed, "MeanAvgDistance")][1],
                                     results[(algo, direction, seed, "residuals")]["avgDistance"],
-                                    results[(algo, direction, seed, "Ttest")]['avgDistance'][1],
+                                    results[(algo, direction, seed, "Ttest")]['avgDistance'],
                                     groundTruth['effectiveDiameter'],
                                     results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
                                     results[(algo, direction, seed, "MeanEffectiveDiameter")][1],
                                     results[(algo, direction, seed, "residuals")]["effectiveDiameter"],
-                                    results[(algo, direction, seed, "Ttest")]['effectiveDiameter'][1],
+                                    results[(algo, direction, seed, "Ttest")]['effectiveDiameter'],
 
                                     groundTruth['lowerBoundDiameter'],
                                     results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
                                     results[(algo, direction, seed, "MeanLowerBoundDiameter")][1],
                                     results[(algo, direction, seed, "residuals")]["lowerBoundDiameter"],
-                                    results[(algo, direction, seed, "Ttest")]['lowerBoundDiameter'][1],
+                                    results[(algo, direction, seed, "Ttest")]['lowerBoundDiameter'],
 
                                     groundTruth['totalCouples'],
                                     results[(algo, direction, seed, "MeanTotalCouples")][0],
                                     results[(algo, direction, seed, "MeanTotalCouples")][1],
                                     results[(algo, direction, seed, "residuals")]["totalCouples"],
-                                    results[(algo, direction, seed, "Ttest")]['totalCouples'][1]
+                                    results[(algo, direction, seed, "Ttest")]['totalCouples']
 
                                 ])
 
@@ -246,19 +246,19 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     algo, direction, seed, groundTruth['avgDistance'],
                                     results[(algo, direction, seed, "MeanAvgDistance")][0],
                                     results[(algo, direction, seed, "residuals")]["avgDistance"],
-                                    results[(algo, direction, seed, "Ttest")]['avgDistance'][1],
+                                    results[(algo, direction, seed, "Ttest")]['avgDistance'],
                                     groundTruth['effectiveDiameter'],
                                     results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
                                     results[(algo, direction, seed, "residuals")]["effectiveDiameter"],
-                                    results[(algo, direction, seed, "Ttest")]['effectiveDiameter'][1],
+                                    results[(algo, direction, seed, "Ttest")]['effectiveDiameter'],
                                     groundTruth['lowerBoundDiameter'],
                                     results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
                                     results[(algo, direction, seed, "residuals")]["lowerBoundDiameter"],
-                                    results[(algo, direction, seed, "Ttest")]['lowerBoundDiameter'][1],
+                                    results[(algo, direction, seed, "Ttest")]['lowerBoundDiameter'],
                                     groundTruth['totalCouples'],
                                     results[(algo, direction, seed, "MeanTotalCouples")][0],
                                     results[(algo, direction, seed, "residuals")]["totalCouples"],
-                                    results[(algo, direction, seed, "Ttest")]['totalCouples'][1]
+                                    results[(algo, direction, seed, "Ttest")]['totalCouples']
 
                                 ])
 
@@ -378,19 +378,19 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                         table.append([
                             direction, seed,
                             groundTruth['avgDistance'],results[(algo, direction, seed,"MeanAvgDistance")][0],
-                            str(results[(algo, direction, seed,"residuals")]["avgDistance"])+"% " +"("+str(results[(algo, direction, seed,"Ttest")]['avgDistance'][1])+")",
+                            str(results[(algo, direction, seed,"residuals")]["avgDistance"])+"% " +"("+str(results[(algo, direction, seed,"Ttest")]['avgDistance'])+")",
 
                             groundTruth['effectiveDiameter'], results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
                             str(results[(algo, direction, seed, "residuals")]["effectiveDiameter"]) + "% " +"(" + str(
-                                results[(algo, direction, seed, "Ttest")]['effectiveDiameter'][1]) + ")",
+                                results[(algo, direction, seed, "Ttest")]['effectiveDiameter']) + ")",
 
                             groundTruth['lowerBoundDiameter'], results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
                             str(results[(algo, direction, seed, "residuals")]["lowerBoundDiameter"]) + "% " +"(" + str(
-                                results[(algo, direction, seed, "Ttest")]['lowerBoundDiameter'][1]) + ")",
+                                results[(algo, direction, seed, "Ttest")]['lowerBoundDiameter']) + ")",
 
                             groundTruth['totalCouples'], results[(algo, direction, seed, "MeanTotalCouples")][0],
                             str(results[(algo, direction, seed, "residuals")]["totalCouples"])+"% " + "(" + str(
-                                results[(algo, direction, seed, "Ttest")]['totalCouples'][1]) + ")",
+                                results[(algo, direction, seed, "Ttest")]['totalCouples']) + ")",
 
 
                         ])

@@ -17,6 +17,7 @@ This is a Python script designed to analyze MinHash Signature Estimation Algorit
 # Description
 
 This script allows you to analyze and fully reproduce our MHSE experiments.
+# MHSE
 ## Short-Intro
 
 MHSE is an algorithm to efficiently estimate the effective diameter and other distance metrics on very large graphs that are based on the neighborhood function such as the exact diameter, the (effective) radius or the average distance ([more details](https://www.semanticscholar.org/paper/Estimation-of-distance-based-metrics-for-very-large-Amati-Angelini/ca07e5fa517fc7567406ebc683dad35aa43758d4)) .

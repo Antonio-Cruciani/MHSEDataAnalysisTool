@@ -1,4 +1,7 @@
 import  math as mt
+#from rpy2.robjects.packages import importr
+#from rpy2.robjects.vectors import StrVector
+import rpy2.robjects as ro
 from scipy import stats
 
 class summary:
@@ -153,10 +156,46 @@ class summary:
             print("Error! You must set ground truth values first!")
             exit(-1)
 
-        self.TtestAvgDistanceAndAvgDistanceGT = stats.ttest_1samp(self.avgDistance,self.avgDistanceGT)
-        self.TtestEffectiveDiameterAndEffectiveDiameterGT = stats.ttest_1samp(self.effectiveDiameter,self.effectiveDiameterGT)
-        self.TtestLowerBoundDiameterANDLowerBoundDiameterGT = stats.ttest_1samp(self.lowerBoundDiameter,self.lowerBoundDiameterGT)
-        self.TtestTotalCouplesAndTotalCouplesGT = stats.ttest_1samp(self.totalCouples,self.totalCouplesGT)
+        # 1. Pass data from Python into R
+        xAvgDistance = ro.vectors.FloatVector(self.avgDistance)
+        xEffectiveDiameter = ro.vectors.FloatVector(self.effectiveDiameter)
+        xLowerBoundDiameter = ro.vectors.FloatVector(self.lowerBoundDiameter)
+        xTotalCouples = ro.vectors.FloatVector(self.totalCouples)
+        # 2. Call t.test on data in R
+        ttest = ro.r['t.test']
+
+        #res = ttest(xr, yr,paired=False, alternative = "two.sided",conflevel = 0.95)
+        resAvgDistance = ttest(xAvgDistance,mu=self.avgDistanceGT, paired=False, alternative="two.sided", conflevel=0.95)
+        resEffectiveDiameter = ttest(xEffectiveDiameter, mu=self.effectiveDiameterGT, paired=False, alternative="two.sided",
+                              conflevel=0.95)
+        resLowerBoundDiameter = ttest(xLowerBoundDiameter, mu=self.lowerBoundDiameterGT, paired=False, alternative="two.sided",
+                              conflevel=0.95)
+
+
+        resTotalCouples =  ttest(xTotalCouples, mu=float(self.totalCouplesGT), paired=False, alternative="two.sided",
+                              conflevel=0.95)
+        # print("RISULTATO T TEST avgDist",resAvgDistance)
+        # print("RISULTATO T TEST effDiam", resEffectiveDiameter)
+        # print("RISULTATO T TEST lowD", resLowerBoundDiameter)
+        # print("RISULTATO T TEST TotalC", resTotalCouples)
+        # 3. Pass data from R back into Python
+
+
+        self.TtestAvgDistanceAndAvgDistanceGT = resAvgDistance.rx2('p.value')[0]
+        self.TtestEffectiveDiameterAndEffectiveDiameterGT = resEffectiveDiameter.rx2('p.value')[0]
+        self.TtestLowerBoundDiameterANDLowerBoundDiameterGT = resLowerBoundDiameter.rx2('p.value')[0]
+        self.TtestTotalCouplesAndTotalCouplesGT = resTotalCouples.rx2('p.value')[0]
+        print(self.TtestAvgDistanceAndAvgDistanceGT )
+        #st.t_test(self.avgDistance,self.avgDistanceGT,**{'var.equal': False,
+        #                                                         'paired': False,''
+        #                                                 'alternative':StrVector(("two.sided",))
+        #                                                 })
+
+        #self.TtestAvgDistanceAndAvgDistanceGT = stats.ttest_1samp(self.avgDistance,self.avgDistanceGT)
+
+        # self.TtestEffectiveDiameterAndEffectiveDiameterGT = stats.ttest_1samp(self.effectiveDiameter,self.effectiveDiameterGT)
+        # self.TtestLowerBoundDiameterANDLowerBoundDiameterGT = stats.ttest_1samp(self.lowerBoundDiameter,self.lowerBoundDiameterGT)
+        # self.TtestTotalCouplesAndTotalCouplesGT = stats.ttest_1samp(self.totalCouples,self.totalCouplesGT)
 
 
 
