@@ -77,7 +77,7 @@ class summary:
             self.maxMemoryUsedSampleMean = sum(max_memory_used_list)/len(max_memory_used_list)
 
     def StandardDeviations(self):
-        if((self.avgDistanceSampleMean == None) and (self.effectiveDiameterSampleMean == None) and (self.lowerBoundDiameterSampleMean == None) and (self.total_coumples_list == None) and (self.maxMemoryUsedSampleMean == None)):
+        if((self.avgDistanceSampleMean == None) and (self.effectiveDiameterSampleMean == None) and (self.lowerBoundDiameterSampleMean == None) and (self.totalCouplesSampleMean == None) and (self.maxMemoryUsedSampleMean == None)):
             print("Error! You must calculate sample means first!")
             exit(-1)
         if(self.avgDistanceSampleMean != None):

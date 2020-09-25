@@ -82,7 +82,6 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
         for direction in direction_list:
             for seed in seed_list:
 
-
                 statistics[(algo,direction,seed)] = summary(algo,direction,seed)
 
                 statistics[(algo,direction,seed)].SampleMeans(experiments[(algo,direction,seed,"avgDistance")],experiments[(algo,direction,seed,"effectiveDiameter")],
