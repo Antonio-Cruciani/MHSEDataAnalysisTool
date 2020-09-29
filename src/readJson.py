@@ -9,7 +9,7 @@ from objects.scores import summary
 
 
 
-def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = False,dataframe = False,LabelPath = None):
+def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = False,dataframe = False,LabelPath = None,rounding = 5):
 
     experiments = {}
     statistics = {}
@@ -347,6 +347,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
         #                 ])
 
         df = pd.DataFrame(elements,columns=head)
+        df.round(rounding)
         df.to_csv(OutputPath+'.csv')
 
         if((LabelPath!= None) and (Ttest)):
@@ -397,6 +398,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
             i = 0
             for tab in relabeled:
                 df_rel = pd.DataFrame(tab, columns=newHeads)
+                df_rel.round(rounding)
                 df_rel.to_csv(OutputPath + str(algo_list[i]) + '.csv')
                 i+=1
 
@@ -431,8 +433,10 @@ def main(argv):
    Ttest = False
    df = False
    relabel = ''
+   rounding = 5
+
    try:
-      opts, args = getopt.getopt(argv,"hi:o:g:s:t:d:l:",["ifile=","ofile=","gfile=","std=","Ttest=","DF=","LAB="])
+      opts, args = getopt.getopt(argv,"hi:o:g:s:t:d:l:r:",["ifile=","ofile=","gfile=","std=","Ttest=","DF=","LAB=","ROUND="])
    except getopt.GetoptError:
         print("Error")
         sys.exit(2)
@@ -464,7 +468,9 @@ def main(argv):
               df = False
       elif opt in ("-l", "--LAB"):
           relabel = arg
-   read_json(inputfile, outputfile, GroundTruthPath, std=std, Ttest=Ttest,dataframe=df,LabelPath=relabel)
+      elif opt in ("-r","--ROUND"):
+          rounding =int(arg)
+   read_json(inputfile, outputfile, GroundTruthPath, std=std, Ttest=Ttest,dataframe=df,LabelPath=relabel,rounding = rounding)
 
 
 if __name__ == "__main__":
