@@ -7,7 +7,10 @@ class resultsStats:
 
         self.seed = seed
         self.maxHop = max(lastHops[0:self.seed])
-        self.collsionTable = self.lowerBoundDiameter(collisionTable)
+        if(type(collisionTable) == list):
+            self.collsionTable = self.tansform_to_dic(collisionTable)
+        else:
+            self.collsionTable = self.lowerBoundDiameter(collisionTable)
         self.completeSeedList = seedList
         self.numNodes = numNodes
 
@@ -18,6 +21,14 @@ class resultsStats:
         self.lowerBoundDiameter = len(self.collsionTable.keys())-1
 
         self.effectiveDiameter = self.effectiveDiameter()
+
+    def tansform_to_dic(self,m):
+
+        new_matrix = [[m[j][i] for j in range(len(m))] for i in range(len(m[0]))]
+        dic = {}
+        for i in range(0,len(new_matrix)):
+            dic[str(i)] = new_matrix[i][:]
+        return(dic)
 
     def lowerBoundDiameter(self,collisionTable):
         newCollisionTable = {}

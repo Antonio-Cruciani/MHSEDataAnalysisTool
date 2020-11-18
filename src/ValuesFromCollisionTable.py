@@ -19,7 +19,7 @@ def ValuesFromCollisionTable(InputPath,OutputPath,AdditionalInfoPath = None,Seed
     resultList = []
     for seed in SeedList:
         for elem in data:
-            hoptabProva = resultsStats(elem["collisionsTable"], elem['lastHops'], elem['numNodes'],elem['seedsList'], seed=seed)
+            hoptabProva = resultsStats(elem["collisionsTable"], elem['lastHops'], elem['nodes'],elem['seed_list'], seed=seed)
             hoptabProva.printStats()
             additionalDict = {}
             for name in AdditionalInfos.values():
