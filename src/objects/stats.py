@@ -32,10 +32,10 @@ class resultsStats:
 
     def lowerBoundDiameter(self,collisionTable):
         newCollisionTable = {}
-        #print(self.maxHop)
+
         for hop in range(0,self.maxHop+1):
             newCollisionTable[str(hop)] = collisionTable[str(hop)]
-            #print(hop)
+
         return(newCollisionTable)
 
     def totalCouples(self):
@@ -73,10 +73,9 @@ class resultsStats:
         return(sumAvg/self.totalCouples)
 
     def interpolate(self,y0,y1,y):
-        #(y1 - y0) is the delta neighbourhood
         return (y - y0) / (y1 - y0)
 
-    #interpolate(mHopTable.get(d-1), mHopTable.get(d), mThreshold * numCollisions));
+
 
     def effectiveDiameter(self):
         if(len(self.collsionTable.values())==0):
@@ -96,17 +95,7 @@ class resultsStats:
 
         previousCouplesD = previousCollisionsD * self.numNodes / self.seed
 
-        # print("1:", sum(self.collsionTable[str(d - 1)][0:self.seed]))
-        # print("2:",sum(self.collsionTable[str(d)][0:self.seed]))
-        # print("3:",numCollisions*self.threshold)
-        # print("d-1",d-1)
-        # print("CD",couplesD)
-        # print("PCD",previousCouplesD)
-        # print("C%",self.couplesPercentage)
 
-
-
-        #interpolation = self.interpolate(sum(self.collsionTable[str(d - 1)][0:self.seed]),sum(self.collsionTable[str(d)][0:self.seed]),numCollisions*self.threshold)
         interpolation = self.interpolate(previousCouplesD,couplesD,self.couplesPercentage)
         result = (d - 1) + interpolation
 
@@ -129,23 +118,23 @@ class resultsStats:
     def get_stats(self,additionalInfo = None):
 
         if(additionalInfo!= None):
-            additionalInfo['avgDistance'] = self.avgDistance
-            additionalInfo['totalCouples'] = self.totalCouples
-            additionalInfo['totalCouplesPercentage'] = self.couplesPercentage
-            additionalInfo['lowerBoundDiameter'] = self.lowerBoundDiameter
-            additionalInfo['effectiveDiameter'] = self.effectiveDiameter
+            additionalInfo['avg_distance'] = self.avgDistance
+            additionalInfo['total_couples'] = self.totalCouples
+            additionalInfo['total_couples_percentage'] = self.couplesPercentage
+            additionalInfo['diameter'] = self.lowerBoundDiameter
+            additionalInfo['effective_diameter'] = self.effectiveDiameter
             additionalInfo['treshold'] = self.threshold
-            additionalInfo['numSeeds'] = self.seed
+            additionalInfo['num_seeds'] = self.seed
             #additionalInfo['seedsList'] = self.transform_seedlist(self.completeSeedList)
         else:
             additionalInfo ={
-                'avgDistance':self.avgDistance,
-                'totalCouples': self.totalCouples,
-                'totalCouplesPercentage':self.couplesPercentage,
-                'lowerBoundDiameter': self.lowerBoundDiameter,
-                'effectiveDiameter':self.effectiveDiameter,
+                'avg_distance':self.avgDistance,
+                'total_couples': self.totalCouples,
+                'total_couples_percentage':self.couplesPercentage,
+                'diameter': self.lowerBoundDiameter,
+                'effective_diameter':self.effectiveDiameter,
                 'treshold':self.threshold,
-                'numSeeds':self.seed,
+                'num_seeds':self.seed,
                 #'seedsList':self.transform_seedlist(self.completeSeedList)
 
             }

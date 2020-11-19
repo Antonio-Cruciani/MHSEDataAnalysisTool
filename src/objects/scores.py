@@ -308,10 +308,10 @@ class summary:
     def get_all_Ttests(self):
         return(
             {
-                "avgDistance":self.TtestAvgDistanceAndAvgDistanceGT,
-                "effectiveDiameter":self.TtestEffectiveDiameterAndEffectiveDiameterGT,
-                "lowerBoundDiameter":self.TtestLowerBoundDiameterANDLowerBoundDiameterGT,
-                "totalCouples":self.TtestTotalCouplesAndTotalCouplesGT
+                "avg_distance":self.TtestAvgDistanceAndAvgDistanceGT,
+                "effective_diameter":self.TtestEffectiveDiameterAndEffectiveDiameterGT,
+                "diameter":self.TtestLowerBoundDiameterANDLowerBoundDiameterGT,
+                "total_couples":self.TtestTotalCouplesAndTotalCouplesGT
             }
         )
 
