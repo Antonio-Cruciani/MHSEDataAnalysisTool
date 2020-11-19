@@ -210,10 +210,10 @@ class summary:
 
     def set_all_ground_truth(self,ground_truth):
 
-        self.avgDistanceGT = ground_truth['avgDistance']
-        self.effectiveDiameterGT = ground_truth['effectiveDiameter']
-        self.lowerBoundDiameterGT = ground_truth['lowerBoundDiameter']
-        self.totalCouplesGT = ground_truth['totalCouples']
+        self.avgDistanceGT = ground_truth['avg_distance']
+        self.effectiveDiameterGT = ground_truth['effective_diameter']
+        self.lowerBoundDiameterGT = ground_truth['diameter']
+        self.totalCouplesGT = ground_truth['total_couples']
 
     def set_avgDistanceGT(self,GT):
         self.avgDistanceGT = GT

@@ -1,17 +1,17 @@
 {
-	"0": "minHashNodeIDs",
-	"1":"numSeeds" , 
-	"2":"numNodes" ,
-	"3": "numArcs",
-	"4": "seedsTime",
+	"0": "node_ids",
+	"1":"num_seed" ,
+	"2":"nodes" ,
+	"3": "edges",
+	"4": "seeds_time",
 	"5": "time",
-	"6": "algorithmName",
-	"7":"maxMemoryUsed",
-	"8":"seedsList",
-	"9":"direction",
-	"10":"hopTable"
+	"6": "algorithm",
+	"7":"memory_used",
+	"8":"direction",
+	"9":"hop_table"
 
 }
+
 
 
 

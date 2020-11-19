@@ -136,7 +136,7 @@ class resultsStats:
             additionalInfo['effectiveDiameter'] = self.effectiveDiameter
             additionalInfo['treshold'] = self.threshold
             additionalInfo['numSeeds'] = self.seed
-            additionalInfo['seedsList'] = self.transform_seedlist(self.completeSeedList)
+            #additionalInfo['seedsList'] = self.transform_seedlist(self.completeSeedList)
         else:
             additionalInfo ={
                 'avgDistance':self.avgDistance,
@@ -146,7 +146,7 @@ class resultsStats:
                 'effectiveDiameter':self.effectiveDiameter,
                 'treshold':self.threshold,
                 'numSeeds':self.seed,
-                'seedsList':self.transform_seedlist(self.completeSeedList)
+                #'seedsList':self.transform_seedlist(self.completeSeedList)
 
             }
 

@@ -19,11 +19,15 @@ def ValuesFromCollisionTable(InputPath,OutputPath,AdditionalInfoPath = None,Seed
     resultList = []
     for seed in SeedList:
         for elem in data:
-            hoptabProva = resultsStats(elem["collisionsTable"], elem['lastHops'], elem['nodes'],elem['seed_list'], seed=seed)
+
+            hoptabProva = resultsStats(elem["collision_table"], elem['last_hops'], elem['nodes'],elem['node_ids'], seed=seed)
             hoptabProva.printStats()
             additionalDict = {}
             for name in AdditionalInfos.values():
                 additionalDict[name] = elem[name]
+
+
+
             resultList.append(hoptabProva.get_stats(additionalDict))
 
     with open(OutputPath + '.json', 'w') as outfile:
@@ -56,6 +60,7 @@ def main(argv):
              seeds.append(int(seed))
    if(not seeds):
         seeds.append(256)
+
    ValuesFromCollisionTable(inputfile,outputfile,additionalFile,SeedList=seeds)
 
 
