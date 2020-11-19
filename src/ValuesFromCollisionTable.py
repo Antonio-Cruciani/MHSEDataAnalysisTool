@@ -71,3 +71,11 @@ if __name__ == "__main__":
 #OutputPath = "/Users/antoniocruciani/Dropbox/EsperimentiDaAnalizzareFUB/Transformed/worldSeriesRetweets"
 #AdditionalInfoPath = "/Users/antoniocruciani/Dropbox/EsperimentiDaAnalizzareFUB/additionalInfos/addInfos.json"
 #ValuesFromHopTable(InputPath,OutputPath,AdditionalInfoPath)
+
+
+
+# python ValuesFromCollisionTable.py -i /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/10run/with_iso/dblp-2010.json -o /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/Analizzati/Calcolati/iso -a /Users/antoniocruciani/Dropbox/MHSEDataAnalysisTool/additionalInfos/addInfos.json -s 16,32,64,128,256
+
+
+
+ # python readJson.py -i /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/Analizzati/Calcolati/iso/dblp-2010.json -o /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/Analizzati/Calcolati/iso/dblp-2010 -g /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/groundtruth/dblp-2010/with_iso/gt_dblp-2010_with_iso.json -s True -t True -d True -l /Users/antoniocruciani/Dropbox/MHSEDataAnalysisTool/TableRelabeling/relabel.jso
