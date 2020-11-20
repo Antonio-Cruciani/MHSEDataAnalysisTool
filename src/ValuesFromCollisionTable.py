@@ -17,10 +17,13 @@ def ValuesFromCollisionTable(InputPath,OutputPath,AdditionalInfoPath = None,Seed
         except IOError:
             print('Error! Can not open ' + AdditionalInfoPath)
     resultList = []
+    i = 0
     for seed in SeedList:
         for elem in data:
-
+            #print("Test numero = ", i)
             hoptabProva = resultsStats(elem["collision_table"], elem['last_hops'], elem['nodes'],elem['node_ids'], seed=seed)
+
+            i+=1
             hoptabProva.printStats()
             additionalDict = {}
             for name in AdditionalInfos.values():
@@ -76,6 +79,7 @@ if __name__ == "__main__":
 
 # python ValuesFromCollisionTable.py -i /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/10run/with_iso/dblp-2010.json -o /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/Analizzati/Calcolati/iso -a /Users/antoniocruciani/Dropbox/MHSEDataAnalysisTool/additionalInfos/addInfos.json -s 16,32,64,128,256
 
-
+# python ValuesFromCollisionTable.py -i /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test100Run_GroundTruth_vs_BMH256/100run/with_iso/dblp-2010.json -o /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test100Run_GroundTruth_vs_BMH256/100run/with_iso/dblp -a /Users/antoniocruciani/Dropbox/MHSEDataAnalysisTool/additionalInfos/addInfos.json -s 16,32,64,128,256
+# python readJson.py -i /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test100Run_GroundTruth_vs_BMH256/100run/with_iso/dblp.json -o /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/Analizzati/Calcolati/dblp-2010 -g /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/groundtruth/dblp-2010/with_iso/gt_dblp-2010_with_iso.json -s True -t True -d True -l /Users/antoniocruciani/Dropbox/MHSEDataAnalysisTool/TableRelabeling/relabel.json
 
  # python readJson.py -i /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/Analizzati/Calcolati/iso/dblp-2010.json -o /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/Analizzati/Calcolati/iso/dblp-2010 -g /Users/antoniocruciani/Dropbox/FUB-IIR/Esperimenti_Nov2020/Test10Run_GroundTruth_vs_BMH256/groundtruth/dblp-2010/with_iso/gt_dblp-2010_with_iso.json -s True -t True -d True -l /Users/antoniocruciani/Dropbox/MHSEDataAnalysisTool/TableRelabeling/relabel.jso

@@ -24,8 +24,25 @@ class resultsStats:
 
     def tansform_to_dic(self,m):
 
+        # for i in range(len(m)):
+        #     if(len(m[i])< len(m[0])):
+        #         print("ERRORE")
+        #         print("Lunghezza m[0] = ",len(m[0]))
+        #         print("Lunghezza m[",i,"] = ",len(m[i]))
+        #         print("---------------m[0]---------------")
+        #         print(m[0])
+        #         print("----------------------------------")
+        #         print("---------------m[",i,"]---------------")
+        #         print(m[i])
+        #         print("----------------------------------")
+        #         exit(1)
+
+
         new_matrix = [[m[j][i] for j in range(len(m))] for i in range(len(m[0]))]
+
         dic = {}
+
+
         for i in range(0,len(new_matrix)):
             dic[str(i)] = new_matrix[i][:]
         return(dic)

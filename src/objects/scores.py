@@ -65,6 +65,7 @@ class summary:
             self.effectiveDiameterSampleMean = sum(effective_diameter_list)/len(effective_diameter_list)
 
         if(lowerbound_diamter_list):
+
             self.lowerBoundDiameter = lowerbound_diamter_list
             self.lowerBoundDiameterSampleMean = sum(lowerbound_diamter_list)/len(lowerbound_diamter_list)
 
@@ -168,6 +169,7 @@ class summary:
         resAvgDistance = ttest(xAvgDistance,mu=self.avgDistanceGT, paired=False, alternative="two.sided", conflevel=0.95)
         resEffectiveDiameter = ttest(xEffectiveDiameter, mu=self.effectiveDiameterGT, paired=False, alternative="two.sided",
                               conflevel=0.95)
+
         resLowerBoundDiameter = ttest(xLowerBoundDiameter, mu=self.lowerBoundDiameterGT, paired=False, alternative="two.sided",
                               conflevel=0.95)
 

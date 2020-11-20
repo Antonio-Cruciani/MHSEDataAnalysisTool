@@ -86,6 +86,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
 
                 statistics[(algo,direction,seed)] = summary(algo,direction,seed)
 
+
                 statistics[(algo,direction,seed)].SampleMeans(experiments[(algo,direction,seed,"avg_distance")],experiments[(algo,direction,seed,"effective_diameter")],
                                                             experiments[(algo,direction,seed,"diameter")],
                                                             experiments[(algo,direction,seed,"total_couples")],experiments[(algo,direction,seed,"memory_used")]
