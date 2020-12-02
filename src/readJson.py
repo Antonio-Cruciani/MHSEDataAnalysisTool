@@ -36,9 +36,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
     in_direction = False
     out_direction = False
     direction_list = []
-
     for elem in data:
-
         if not(elem['num_seeds'] in seed_list):
             seed_list.append(elem['num_seeds'])
         if not(elem['algorithm'] in algo_list):

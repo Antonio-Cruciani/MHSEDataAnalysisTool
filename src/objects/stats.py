@@ -90,6 +90,8 @@ class resultsStats:
         return(sumAvg/self.totalCouples)
 
     def interpolate(self,y0,y1,y):
+        if(y1-y0 == 0):
+            return(0)
         return (y - y0) / (y1 - y0)
 
 
