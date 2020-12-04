@@ -2,7 +2,7 @@ import json
 import pandas as pd
 #import numpy as np
 import sys, getopt
-
+import rpy2.robjects as ro
 from objects.scores import summary
 #from objects.stats import resultsStats
 
@@ -14,6 +14,8 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
     experiments = {}
     statistics = {}
     results = {}
+    # provvisorio
+    #sample_residuals = {}
     groundTruth = {}
     if((Ttest == True ) and GroundTruthPath == None ):
         print("Error! If you want to perform a Ttest between samples and groundtruth you need also the groundtruth values")
@@ -125,6 +127,22 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                     residuals["total_couples"] = statistics[(algo, direction, seed)].get_totalCouplesResidual()
                     results[(algo, direction, seed, "residuals")] = residuals
 
+                    CI = {}
+
+                    CI['avg_distance'] = statistics[(algo, direction, seed)].get_ciAvgDistance()
+                    CI['effective_diameter'] = statistics[(algo, direction, seed)].get_ciEffectiveDiameter()
+                    CI['diameter'] = statistics[(algo, direction, seed)].get_ciLowerBoundDiameter()
+                    CI['total_couples'] = statistics[(algo, direction, seed)].get_ciTotalCouples()
+                    results[(algo, direction, seed, "confidence_Interval")] = CI
+
+                    # sample_residuals[(algo,direction,seed,"avg_distance")] = statistics[(algo, direction, seed)].get_avgDistanceResidualSample()
+                    # sample_residuals[(algo, direction, seed, "effective_diameter")] = statistics[
+                    #     (algo, direction, seed)].get_effectiveDiameterResidualSample()
+                    # sample_residuals[(algo, direction, seed, "diameter")] = statistics[
+                    #     (algo, direction, seed)].get_lowerBoundDiameterResidualSample()
+                    # sample_residuals[(algo, direction, seed, "total_couples")] = statistics[
+                    #     (algo, direction, seed)].get_totalCouplesResidualSample()
+
                 if(Ttest):
                     statistics[(algo, direction, seed)].Ttest()
                     results[(algo, direction, seed, "Ttest")] = statistics[(algo, direction, seed)].get_all_Ttests()
@@ -142,10 +160,10 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
         if(std):
             if(GroundTruthPath):
                 if(Ttest):
-                    head.extend(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance",
-                "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter","pValueEffectiveDiameter",
-                "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter","pValueLowerBoundDiameter",
-                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples"])
+                    head.extend(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance","ciAvgDistance",
+                "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter","pValueEffectiveDiameter","ciEffectiveDiameter",
+                "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter","pValueLowerBoundDiameter","ciLowerBoundDiameter",
+                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples","CITotalCouples"])
                     elements = []
                     for algo in algo_list:
                         for direction in direction_list:
@@ -156,23 +174,29 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "MeanAvgDistance")][1],
                                     results[(algo, direction, seed, "residuals")]["avg_distance"],
                                     results[(algo, direction, seed, "Ttest")]['avg_distance'],
+                                    results[(algo, direction, seed, "confidence_Interval")]['avg_distance'],
+
                                     groundTruth['effective_diameter'],
                                     results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
                                     results[(algo, direction, seed, "MeanEffectiveDiameter")][1],
                                     results[(algo, direction, seed, "residuals")]["effective_diameter"],
                                     results[(algo, direction, seed, "Ttest")]['effective_diameter'],
+                                    results[(algo, direction, seed, "confidence_Interval")]['effective_diameter'],
 
                                     groundTruth['diameter'],
                                     results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
                                     results[(algo, direction, seed, "MeanLowerBoundDiameter")][1],
                                     results[(algo, direction, seed, "residuals")]["diameter"],
                                     results[(algo, direction, seed, "Ttest")]['diameter'],
+                                    results[(algo, direction, seed, "confidence_Interval")]['diameter'],
 
                                     groundTruth['total_couples'],
                                     results[(algo, direction, seed, "MeanTotalCouples")][0],
                                     results[(algo, direction, seed, "MeanTotalCouples")][1],
                                     results[(algo, direction, seed, "residuals")]["total_couples"],
-                                    results[(algo, direction, seed, "Ttest")]['total_couples']
+                                    results[(algo, direction, seed, "Ttest")]['total_couples'],
+                                    results[(algo, direction, seed, "confidence_Interval")]['total_couples'],
+
 
                                 ])
 
@@ -358,6 +382,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
             except IOError:
                 print('Error! Can not open '+ LabelPath)
             #print(head)
+
             header =[]
             for elem in head:
                 if(elem in newLabels.keys()):
@@ -380,24 +405,166 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                             direction, seed,
                             groundTruth['avg_distance'],results[(algo, direction, seed,"MeanAvgDistance")][0],
                             str(results[(algo, direction, seed,"residuals")]["avg_distance"])+"% " +"("+str(results[(algo, direction, seed,"Ttest")]['avg_distance'])+")",
+                            "+ - "+str(results[(algo, direction, seed, "confidence_Interval")]['avg_distance']),
 
                             groundTruth['effective_diameter'], results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
                             str(results[(algo, direction, seed, "residuals")]["effective_diameter"]) + "% " +"(" + str(
                                 results[(algo, direction, seed, "Ttest")]['effective_diameter']) + ")",
+                            "+ - " + str(results[(algo, direction, seed, "confidence_Interval")]['effective_diameter']),
 
                             groundTruth['diameter'], results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
                             str(results[(algo, direction, seed, "residuals")]["diameter"]) + "% " +"(" + str(
                                 results[(algo, direction, seed, "Ttest")]['diameter']) + ")",
+                            "+ - " + str(results[(algo, direction, seed, "confidence_Interval")]['diameter']),
 
                             groundTruth['total_couples'], results[(algo, direction, seed, "MeanTotalCouples")][0],
                             str(results[(algo, direction, seed, "residuals")]["total_couples"])+"% " + "(" + str(
                                 results[(algo, direction, seed, "Ttest")]['total_couples']) + ")",
+                            "+ - " + str(results[(algo, direction, seed, "confidence_Interval")]['total_couples'])
 
 
                         ])
                 relabeled.append(table)
+
+            # # # one sided T TEST Between residual in-out
+            # ttest = ro.r['t.test']
+            # alternative = 'greater'
+            # residual_test = []
+            # if(in_direction and out_direction):
+            #     #print(sample_residuals.keys())
+            #     for algo in algo_list:
+            #         avg_distance_in = []
+            #         avg_distance_out = []
+            #         effective_diameter_in = []
+            #         effective_diameter_out = []
+            #         diameter_in = []
+            #         diameter_out = []
+            #         couples_in = []
+            #         couples_out = []
+            #         for seed in seed_list:
+            #             in_residual = sample_residuals[(algo, "in", seed,'avg_distance')]
+            #             out_residual = sample_residuals[(algo, "out", seed,"avg_distance")]
+            #             print(in_residual)
+            #             avg_distance_in.append(in_residual)
+            #             avg_distance_out.append(out_residual)
+            #             xAvgD = ro.vectors.FloatVector(in_residual)
+            #             yAvgD =  ro.vectors.FloatVector(out_residual)
+            #             test_avg_distance = ttest(xAvgD, yAvgD, paired=False, alternative=alternative,
+            #                                       conflevel=0.95)
+            #
+            #             in_residual = sample_residuals[(algo, "in", seed,"effective_diameter")]
+            #             out_residual = sample_residuals[(algo, "out", seed,"effective_diameter")]
+            #             effective_diameter_in.append(in_residual)
+            #             effective_diameter_out.append(out_residual)
+            #             xED =  ro.vectors.FloatVector(in_residual)
+            #             yED = ro.vectors.FloatVector(out_residual)
+            #             test_effective_diameter = ttest(xED, yED, paired=False, alternative=alternative,
+            #                                             conflevel=0.95)
+            #
+            #
+            #
+            #             in_residual = sample_residuals[(algo, "in", seed,"diameter")]
+            #             out_residual = sample_residuals[(algo, "out", seed,"diameter")]
+            #             diameter_in.append(in_residual)
+            #             diameter_out.append(out_residual)
+            #             xD = ro.vectors.FloatVector(in_residual)
+            #             yD = ro.vectors.FloatVector(out_residual)
+            #
+            #             test_diameter = ttest(xD, yD, paired=False, alternative=alternative,
+            #                                   conflevel=0.95)
+            #
+            #
+            #             in_residual = sample_residuals[(algo, "in", seed,"total_couples")]
+            #             out_residual = sample_residuals[(algo, "out", seed,"total_couples")]
+            #             couples_in.append(in_residual)
+            #             couples_out.append(out_residual)
+            #             xC = ro.vectors.FloatVector(in_residual)
+            #             yC = ro.vectors.FloatVector(out_residual)
+            #             test_couples = ttest(xC, yC, paired=False, alternative=alternative,
+            #                                  conflevel=0.95)
+            #
+            #             avgd = test_avg_distance.rx2('p.value')[0]
+            #             ed = test_effective_diameter.rx2('p.value')[0]
+            #             di = test_diameter.rx2('p.value')[0]
+            #             co =  test_couples.rx2('p.value')[0]
+            #
+            #             residual_test.append[algo,seed,
+            #                 avgd, ed,di,co
+            #                 ]
+            #     heading = ['algorithm','seeds','pval_avg_distance_residual','pval_eff_diamenter_residual','pval_diameter_residual','pval_couples_residual']
+            #     residualTestDf = pd.DataFrame(residual_test, columns=heading)
+            #     #df.round(rounding)
+            #     residualTestDf.to_csv(OutputPath +'_residualTest'+ '.csv')
+
+                    # ttest = ro.r['t.test']
+            # alternative = 'greater'
+            # residual_test = []
+            # if(in_direction and out_direction):
+            #     for algo in algo_list:
+            #         avg_distance_in = []
+            #         avg_distance_out = []
+            #         effective_diameter_in = []
+            #         effective_diameter_out = []
+            #         diameter_in = []
+            #         diameter_out = []
+            #         couples_in = []
+            #         couples_out = []
+            #         for seed in seed_list:
+            #             # avg distance test
+            #
+            #             in_residual = results[(algo, "in", seed, "residuals")]["avg_distance"]
+            #             out_residual = results[(algo, "out", seed, "residuals")]["avg_distance"]
+            #             avg_distance_in.append(in_residual)
+            #             avg_distance_out.append(out_residual)
+            #
+            #
+            #
+            #             in_residual = results[(algo, "in", seed, "residuals")]["effective_diameter"]
+            #             out_residual = results[(algo, "out", seed, "residuals")]["effective_diameter"]
+            #             effective_diameter_in.append(in_residual)
+            #             effective_diameter_out.append(out_residual)
+            #
+            #
+            #
+            #             in_residual = results[(algo, "in", seed, "residuals")]["diameter"]
+            #             out_residual = results[(algo, "out", seed, "residuals")]["diameter"]
+            #             diameter_in.append(in_residual)
+            #             diameter_out.append(out_residual)
+            #
+            #
+            #             in_residual = results[(algo, "in", seed, "residuals")]["total_couples"]
+            #             out_residual = results[(algo, "out", seed, "residuals")]["total_couples"]
+            #             couples_in.append(in_residual)
+            #             couples_out.append(out_residual)
+            #
+            #
+            # xAvgD = ro.vectors.FloatVector(avg_distance_in)
+            # yAvgD =  ro.vectors.FloatVector(avg_distance_out)
+            # test_avg_distance = ttest(xAvgD, yAvgD, paired=False, alternative=alternative,
+            #                           conflevel=0.95)
+            # xED =  ro.vectors.FloatVector(effective_diameter_in)
+            # yED = ro.vectors.FloatVector(effective_diameter_out)
+            # test_effective_diameter = ttest(xED, yED, paired=False, alternative=alternative,
+            #                                 conflevel=0.95)
+            # xD = ro.vectors.FloatVector(diameter_in)
+            # yD = ro.vectors.FloatVector(diameter_out)
+            #
+            # test_diameter = ttest(xD, yD, paired=False, alternative=alternative,
+            #                       conflevel=0.95)
+            # xC = ro.vectors.FloatVector(couples_in)
+            # yC = ro.vectors.FloatVector(couples_out)
+            # test_couples = ttest(xC, yC, paired=False, alternative=alternative,
+            #                      conflevel=0.95)
+            # residual_test.append[test_avg_distance.rx2('p.value')[0],test_effective_diameter.rx2('p.value')[0],test_diameter.rx2('p.value')[0],test_couples.rx2('p.value')[0]]
+            # heading = ['pval_avg_distance_residual','pval_eff_diamenter_residual','pval_diameter_residual','pval_couples_residual']
+            # residualTestDf = pd.DataFrame(residual_test, columns=heading)
+            # #df.round(rounding)
+            # residualTestDf.to_csv(OutputPath +'_residualTest'+ '.csv')
+
             i = 0
+
             for tab in relabeled:
+
                 df_rel = pd.DataFrame(tab, columns=newHeads)
                 df_rel.round(rounding)
                 df_rel.to_csv(OutputPath + str(algo_list[i]) + '.csv')
