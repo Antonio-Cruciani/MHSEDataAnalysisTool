@@ -12,8 +12,8 @@ def get_t_tests(inputFile,outputFile):
     results = []
     alt = "greater"
     ttest = ro.r['t.test']
-    sd = ro.r['sd']
-    qt = ro.r['qt']
+    # sd = ro.r['sd']
+    # qt = ro.r['qt']
     for seed in seeds:
 
 
@@ -21,7 +21,7 @@ def get_t_tests(inputFile,outputFile):
         out_dir = data[(data['direction'] == 'out')&(data['seeds'] == seed)]
 
         xAvgDistance = ro.vectors.FloatVector(in_dir['residualAvgDistance'])
-        degrees = len(xAvgDistance) - 1
+
         yAvgDistance = ro.vectors.FloatVector(out_dir['residualAvgDistance'])
 
         resAvgDistance = ttest(xAvgDistance, yAvgDistance, paired=False, alternative=alt,
@@ -66,14 +66,14 @@ def get_t_tests(inputFile,outputFile):
             ]
         )
     header = ['seeds',
-              'avg_distance',
-              'diameter',
-              'effective_diameter',
-              'total_couples'
+              'p_val_avg_distance',
+              'p_val_diameter',
+              'p_val_effective_diameter',
+              'p_val_total_couples'
               ]
     df = pd.DataFrame(results,columns =header)
     df.to_csv(outputFile)
 
-input =  '/home/antonio/Desktop/fub/with_iso/tomerge/combined_csv.csv'
-output = '/home/antonio/Downloads/TESTresidual_with_iso.csv'
+input =  '/home/antonio/Desktop/fub/without_iso/tomerge/combined_csv.csv'
+output = '/home/antonio/Downloads/TESTresidual_without_iso.csv'
 get_t_tests(input,output)
