@@ -152,12 +152,12 @@ class summary:
             print("Error! You must set ground truth values first!")
             exit(-1)
 
-        self.avgDistanceResidual = ((self.avgDistanceSampleMean - self.avgDistanceGT) / self.avgDistanceGT) * 100
-        self.effectiveDiameterResidual = ((
-                                                      self.effectiveDiameterSampleMean - self.effectiveDiameterGT) / self.effectiveDiameterGT) * 100
-        self.lowerBoundDiameterResidual = ((
-                                                       self.lowerBoundDiameterSampleMean - self.lowerBoundDiameterGT) / self.lowerBoundDiameterGT) * 100
-        self.totalCouplesResidual = ((self.totalCouplesSampleMean - self.totalCouplesGT) / self.totalCouplesGT) * 100
+        self.avgDistanceResidual = (abs(self.avgDistanceSampleMean - self.avgDistanceGT) ) * 100
+        self.effectiveDiameterResidual = (abs(
+                                                      self.effectiveDiameterSampleMean - self.effectiveDiameterGT) ) * 100
+        self.lowerBoundDiameterResidual = (abs(
+                                                       self.lowerBoundDiameterSampleMean - self.lowerBoundDiameterGT) ) * 100
+        self.totalCouplesResidual = (abs(self.totalCouplesSampleMean - self.totalCouplesGT) ) * 100
         #self.SampleResiduals()
         self.ConfidenceIntervall()
 

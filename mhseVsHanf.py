@@ -25,10 +25,10 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
 
     yAvgDistanceHAnf = ro.vectors.FloatVector(hdata['residualAvgDistance'])
 
-    resAvgDistanceIN = ttest(xAvgDistanceIN, yAvgDistanceHAnf, paired=False, alternative=alt,
+    resAvgDistanceIN = ttest(xAvgDistanceIN, yAvgDistanceHAnf, paired=True, alternative=alt,
                            conflevel=0.95)
 
-    resAvgDistanceOUT = ttest(xAvgDistanceOUT, yAvgDistanceHAnf, paired=False, alternative=alt,
+    resAvgDistanceOUT = ttest(xAvgDistanceOUT, yAvgDistanceHAnf, paired=True, alternative=alt,
                              conflevel=0.95)
 
 
@@ -38,9 +38,9 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
 
     yDiameterHAnf =  ro.vectors.FloatVector(hdata['residualLowerBoundDiameter'])
 
-    resDiameterIN = ttest(xDiameterIN, yDiameterHAnf, paired=False, alternative=alt,
+    resDiameterIN = ttest(xDiameterIN, yDiameterHAnf, paired=True, alternative=alt,
                            conflevel=0.95)
-    resDiameterOUT = ttest(xDiameterOUT, yDiameterHAnf, paired=False, alternative=alt,
+    resDiameterOUT = ttest(xDiameterOUT, yDiameterHAnf, paired=True, alternative=alt,
                           conflevel=0.95)
 
 
@@ -52,10 +52,10 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
     yEffectiveDiameterHAnf = ro.vectors.FloatVector(hdata['residualEffectiveDiameter'])
 
 
-    resEffectiveDiameterIN = ttest(xEffectiveDiameterIN, yEffectiveDiameterHAnf, paired=False, alternative=alt,
+    resEffectiveDiameterIN = ttest(xEffectiveDiameterIN, yEffectiveDiameterHAnf, paired=True, alternative=alt,
                         conflevel=0.95)
 
-    resEffectiveDiameterOUT = ttest(xEffectiveDiameterOUT, yEffectiveDiameterHAnf, paired=False, alternative=alt,
+    resEffectiveDiameterOUT = ttest(xEffectiveDiameterOUT, yEffectiveDiameterHAnf, paired=True, alternative=alt,
                                    conflevel=0.95)
 
 
@@ -64,9 +64,9 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
     xCouplesOUT = ro.vectors.FloatVector(out_dir['residualTotalCouples'])
     yCouplesHAnf = ro.vectors.FloatVector(hdata['residualTotalCouples'])
 
-    resCouplesIN = ttest(xCouplesIN, yCouplesHAnf, paired=False, alternative=alt,
+    resCouplesIN = ttest(xCouplesIN, yCouplesHAnf, paired=True, alternative=alt,
                                  conflevel=0.95)
-    resCouplesOUT = ttest(xCouplesOUT, yCouplesHAnf, paired=False, alternative=alt,
+    resCouplesOUT = ttest(xCouplesOUT, yCouplesHAnf, paired=True, alternative=alt,
                        conflevel=0.95)
 
 
