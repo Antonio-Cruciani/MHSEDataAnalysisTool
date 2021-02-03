@@ -24,7 +24,7 @@ def get_t_tests(inputFile,outputFile):
 
         yAvgDistance = ro.vectors.FloatVector(out_dir['residualAvgDistance'])
 
-        resAvgDistance = ttest(xAvgDistance, yAvgDistance, paired=False, alternative=alt,
+        resAvgDistance = ttest(xAvgDistance, yAvgDistance, paired=True, alternative=alt,
                                conflevel=0.95)
 
 
@@ -33,7 +33,7 @@ def get_t_tests(inputFile,outputFile):
         yDiameter = ro.vectors.FloatVector(out_dir['residualLowerBoundDiameter'])
 
 
-        resDiameter = ttest(xDiameter, yDiameter, paired=False, alternative=alt,
+        resDiameter = ttest(xDiameter, yDiameter, paired=True, alternative=alt,
                                conflevel=0.95)
 
 
@@ -43,7 +43,7 @@ def get_t_tests(inputFile,outputFile):
         yEffectiveDiameter = ro.vectors.FloatVector(out_dir['residualEffectiveDiameter'])
 
 
-        resEffectiveDiameter = ttest(xEffectiveDiameter, yEffectiveDiameter, paired=False, alternative=alt,
+        resEffectiveDiameter = ttest(xEffectiveDiameter, yEffectiveDiameter, paired=True, alternative=alt,
                             conflevel=0.95)
 
 
@@ -51,7 +51,7 @@ def get_t_tests(inputFile,outputFile):
         xCouples = ro.vectors.FloatVector(in_dir['residualTotalCouples'])
         yCouples = ro.vectors.FloatVector(out_dir['residualTotalCouples'])
 
-        resCouples = ttest(xCouples, yCouples, paired=False, alternative=alt,
+        resCouples = ttest(xCouples, yCouples, paired=True, alternative=alt,
                                      conflevel=0.95)
 
 
