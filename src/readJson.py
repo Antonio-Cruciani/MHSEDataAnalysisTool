@@ -359,21 +359,21 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                         table.append([
                             direction, seed,
                             groundTruth['avg_distance'],results[(algo, direction, seed,"MeanAvgDistance")][0],
-                            str(results[(algo, direction, seed,"residuals")]["avg_distance"])+"% " +"("+str(results[(algo, direction, seed,"Ttest")]['avg_distance'])+")",
+                            str(results[(algo, direction, seed,"residuals")]["avg_distance"])+" " +"("+str(results[(algo, direction, seed,"Ttest")]['avg_distance'])+")",
                             "+ - "+str(results[(algo, direction, seed, "confidence_Interval")]['avg_distance']),
 
                             groundTruth['effective_diameter'], results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
-                            str(results[(algo, direction, seed, "residuals")]["effective_diameter"]) + "% " +"(" + str(
+                            str(results[(algo, direction, seed, "residuals")]["effective_diameter"]) + " " +"(" + str(
                                 results[(algo, direction, seed, "Ttest")]['effective_diameter']) + ")",
                             "+ - " + str(results[(algo, direction, seed, "confidence_Interval")]['effective_diameter']),
 
                             groundTruth['diameter'], results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
-                            str(results[(algo, direction, seed, "residuals")]["diameter"]) + "% " +"(" + str(
+                            str(results[(algo, direction, seed, "residuals")]["diameter"]) + " " +"(" + str(
                                 results[(algo, direction, seed, "Ttest")]['diameter']) + ")",
                             "+ - " + str(results[(algo, direction, seed, "confidence_Interval")]['diameter']),
 
                             groundTruth['total_couples'], results[(algo, direction, seed, "MeanTotalCouples")][0],
-                            str(results[(algo, direction, seed, "residuals")]["total_couples"])+"% " + "(" + str(
+                            str(results[(algo, direction, seed, "residuals")]["total_couples"])+" " + "(" + str(
                                 results[(algo, direction, seed, "Ttest")]['total_couples']) + ")",
                             "+ - " + str(results[(algo, direction, seed, "confidence_Interval")]['total_couples'])
 
