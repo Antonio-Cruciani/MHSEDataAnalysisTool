@@ -12,6 +12,7 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
     results = []
     alt = "greater"
     ttest = ro.r['t.test']
+    wilcoxon = ro.r['wilcox.test']
     # sd = ro.r['sd']
     # qt = ro.r['qt']
 
@@ -27,9 +28,14 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
 
     resAvgDistanceIN = ttest(xAvgDistanceIN, yAvgDistanceHAnf, paired=True, alternative=alt,
                            conflevel=0.95)
+    resAvgDistanceINWilcoxon = wilcoxon(xAvgDistanceIN, yAvgDistanceHAnf, paired=True, alternative=alt,
+                             conflevel=0.95)
 
     resAvgDistanceOUT = ttest(xAvgDistanceOUT, yAvgDistanceHAnf, paired=True, alternative=alt,
                              conflevel=0.95)
+
+    resAvgDistanceOUTWilcoxon = wilcoxon(xAvgDistanceOUT, yAvgDistanceHAnf, paired=True, alternative=alt,
+                              conflevel=0.95)
 
 
 
@@ -40,8 +46,12 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
 
     resDiameterIN = ttest(xDiameterIN, yDiameterHAnf, paired=True, alternative=alt,
                            conflevel=0.95)
+    resDiameterINWilcoxon = wilcoxon(xDiameterIN, yDiameterHAnf, paired=True, alternative=alt,
+                          conflevel=0.95)
     resDiameterOUT = ttest(xDiameterOUT, yDiameterHAnf, paired=True, alternative=alt,
                           conflevel=0.95)
+    resDiameterOUTWilcoxon = wilcoxon(xDiameterOUT, yDiameterHAnf, paired=True, alternative=alt,
+                           conflevel=0.95)
 
 
 
@@ -54,9 +64,13 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
 
     resEffectiveDiameterIN = ttest(xEffectiveDiameterIN, yEffectiveDiameterHAnf, paired=True, alternative=alt,
                         conflevel=0.95)
+    resEffectiveDiameterINWilcoxon = wilcoxon(xEffectiveDiameterIN, yEffectiveDiameterHAnf, paired=True, alternative=alt,
+                                   conflevel=0.95)
 
     resEffectiveDiameterOUT = ttest(xEffectiveDiameterOUT, yEffectiveDiameterHAnf, paired=True, alternative=alt,
                                    conflevel=0.95)
+    resEffectiveDiameterOUTWilcoxon = wilcoxon(xEffectiveDiameterOUT, yEffectiveDiameterHAnf, paired=True, alternative=alt,
+                                    conflevel=0.95)
 
 
 
@@ -66,9 +80,12 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
 
     resCouplesIN = ttest(xCouplesIN, yCouplesHAnf, paired=True, alternative=alt,
                                  conflevel=0.95)
+    resCouplesINWilcoxon = wilcoxon(xCouplesIN, yCouplesHAnf, paired=True, alternative=alt,
+                         conflevel=0.95)
     resCouplesOUT = ttest(xCouplesOUT, yCouplesHAnf, paired=True, alternative=alt,
                        conflevel=0.95)
-
+    resCouplesOUTWilcoxon = wilcoxon(xCouplesOUT, yCouplesHAnf, paired=True, alternative=alt,
+                          conflevel=0.95)
 
     results.append(
         [
@@ -82,6 +99,15 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
             resCouplesIN.rx2('p.value')[0],
             resCouplesOUT.rx2('p.value')[0],
 
+            resAvgDistanceINWilcoxon.rx2('p.value')[0],
+            resAvgDistanceOUTWilcoxon.rx2('p.value')[0],
+            resDiameterINWilcoxon.rx2('p.value')[0],
+            resDiameterOUTWilcoxon.rx2('p.value')[0],
+            resEffectiveDiameterINWilcoxon.rx2('p.value')[0],
+            resEffectiveDiameterOUTWilcoxon.rx2('p.value')[0],
+            resCouplesINWilcoxon.rx2('p.value')[0],
+            resCouplesOUTWilcoxon.rx2('p.value')[0],
+
         ]
     )
     header = ['seeds',
@@ -94,11 +120,20 @@ def get_t_tests(inputFileMhse,inputFileHyperAnf,outputFile):
           'pval total_couples IN',
           'pval total_couples OUT',
 
+          'pval Wilcoxon avg_distance Direction IN',
+          'pval Wilcoxon avg_distance Direction OUT',
+          'pval Wilcoxon diameter IN',
+          'pval Wilcoxon diameter OUT',
+          'pval Wilcoxon effective_diameter IN',
+          'pval Wilcoxon effective_diameter OUT',
+          'pval Wilcoxon total_couples IN',
+          'pval Wilcoxon total_couples OUT',
+
           ]
     df = pd.DataFrame(results,columns =header)
     df.to_csv(outputFile)
 
-inputMHSE =  '/home/antonio/Desktop/fub/without_iso/tomerge/combined_csv.csv'
-inputHyperAnf =""
+inputMHSE =  '/home/antonio/Downloads/mhse_with_iso.csv'
+inputHyperAnf ="/home/antonio/Downloads/hb_with_iso.csv"
 output = '/home/antonio/Downloads/TESTresidual_without_iso.csv'
 get_t_tests(inputMHSE,inputHyperAnf,output)

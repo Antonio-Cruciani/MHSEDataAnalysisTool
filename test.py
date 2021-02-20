@@ -12,6 +12,7 @@ def get_t_tests(inputFile,outputFile):
     results = []
     alt = "greater"
     ttest = ro.r['t.test']
+    wilcoxon = ro.r['wilcox.test']
     # sd = ro.r['sd']
     # qt = ro.r['qt']
     for seed in seeds:
@@ -27,7 +28,8 @@ def get_t_tests(inputFile,outputFile):
         resAvgDistance = ttest(xAvgDistance, yAvgDistance, paired=True, alternative=alt,
                                conflevel=0.95)
 
-
+        resAvgDistanceWilcoxon = wilcoxon(xAvgDistance, yAvgDistance, paired=True, alternative=alt,
+                               conflevel=0.95)
 
         xDiameter = ro.vectors.FloatVector(in_dir['residualLowerBoundDiameter'])
         yDiameter = ro.vectors.FloatVector(out_dir['residualLowerBoundDiameter'])
@@ -36,6 +38,8 @@ def get_t_tests(inputFile,outputFile):
         resDiameter = ttest(xDiameter, yDiameter, paired=True, alternative=alt,
                                conflevel=0.95)
 
+        resDiameterWilcoxon = wilcoxon(xDiameter, yDiameter, paired=True, alternative=alt,
+                               conflevel=0.95)
 
 
 
@@ -46,6 +50,8 @@ def get_t_tests(inputFile,outputFile):
         resEffectiveDiameter = ttest(xEffectiveDiameter, yEffectiveDiameter, paired=True, alternative=alt,
                             conflevel=0.95)
 
+        resEffectiveDiameterWilcoxon = wilcoxon(xEffectiveDiameter, yEffectiveDiameter, paired=True, alternative=alt,
+                            conflevel=0.95)
 
 
         xCouples = ro.vectors.FloatVector(in_dir['residualTotalCouples'])
@@ -53,23 +59,32 @@ def get_t_tests(inputFile,outputFile):
 
         resCouples = ttest(xCouples, yCouples, paired=True, alternative=alt,
                                      conflevel=0.95)
-
+        resCouplesWilcoxon = wilcoxon(xCouples, yCouples, paired=True, alternative=alt,
+                                     conflevel=0.95)
 
         results.append(
             [
                 seed,
                 resAvgDistance.rx2('p.value')[0],
+                resAvgDistanceWilcoxon.rx2('p.value')[0],
                 resDiameter.rx2('p.value')[0],
+                resDiameterWilcoxon.rx2('p.value')[0],
                 resEffectiveDiameter.rx2('p.value')[0],
+                resEffectiveDiameterWilcoxon.rx2('p.value')[0],
                 resCouples.rx2('p.value')[0],
+                resCouplesWilcoxon.rx2('p.value')[0],
 
             ]
         )
     header = ['seeds',
               'p_val_avg_distance',
+              'p_val_avg_distanceWilcoxon',
               'p_val_diameter',
+              'p_val_diameterWilcoxon',
               'p_val_effective_diameter',
-              'p_val_total_couples'
+              'p_val_effective_diameterWilcoxon',
+              'p_val_total_couples',
+              'p_val_total_couplesWilcoxon'
               ]
     df = pd.DataFrame(results,columns =header)
     df.to_csv(outputFile)

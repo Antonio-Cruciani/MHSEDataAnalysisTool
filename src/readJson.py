@@ -139,18 +139,19 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
 
                 if(Ttest):
                     statistics[(algo, direction, seed)].Ttest()
+                    statistics[(algo, direction, seed)].wilcoxon_test()
                     results[(algo, direction, seed, "Ttest")] = statistics[(algo, direction, seed)].get_all_Ttests()
-
+                    results[(algo, direction, seed, "Wilcoxon")] = statistics[(algo, direction, seed)].get_all_WilcoxonTest()
 
     if(dataframe):
         head = ["algo","direction","seeds"]
         if(std):
             if(GroundTruthPath):
                 if(Ttest):
-                    head.extend(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance","ciAvgDistance",
-                "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter","pValueEffectiveDiameter","ciEffectiveDiameter",
-                "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter","pValueLowerBoundDiameter","ciLowerBoundDiameter",
-                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples","CITotalCouples"])
+                    head.extend(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance","pvalWilcoxonAvgDistance","ciAvgDistance",
+                "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter","pValueEffectiveDiameter","pvalWilcoxonEffectiveDiameter","ciEffectiveDiameter",
+                "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter","pValueLowerBoundDiameter","pvalWilcoxonLowerBoundDiameter","ciLowerBoundDiameter",
+                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples","pvalWilcoxonTotalCouples","CITotalCouples"])
                     elements = []
                     for algo in algo_list:
                         for direction in direction_list:
@@ -161,6 +162,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "MeanAvgDistance")][1],
                                     results[(algo, direction, seed, "residuals")]["avg_distance"],
                                     results[(algo, direction, seed, "Ttest")]['avg_distance'],
+                                    results[(algo, direction, seed, "Wilcoxon")]['avg_distance'],
                                     results[(algo, direction, seed, "confidence_Interval")]['avg_distance'],
 
                                     groundTruth['effective_diameter'],
@@ -168,6 +170,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "MeanEffectiveDiameter")][1],
                                     results[(algo, direction, seed, "residuals")]["effective_diameter"],
                                     results[(algo, direction, seed, "Ttest")]['effective_diameter'],
+                                    results[(algo, direction, seed, "Wilcoxon")]['effective_diameter'],
                                     results[(algo, direction, seed, "confidence_Interval")]['effective_diameter'],
 
                                     groundTruth['diameter'],
@@ -175,6 +178,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "MeanLowerBoundDiameter")][1],
                                     results[(algo, direction, seed, "residuals")]["diameter"],
                                     results[(algo, direction, seed, "Ttest")]['diameter'],
+                                    results[(algo, direction, seed, "Wilcoxon")]['diameter'],
                                     results[(algo, direction, seed, "confidence_Interval")]['diameter'],
 
                                     groundTruth['total_couples'],
@@ -182,6 +186,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "MeanTotalCouples")][1],
                                     results[(algo, direction, seed, "residuals")]["total_couples"],
                                     results[(algo, direction, seed, "Ttest")]['total_couples'],
+                                    results[(algo, direction, seed, "Wilcoxon")]['total_couples'],
                                     results[(algo, direction, seed, "confidence_Interval")]['total_couples'],
 
 

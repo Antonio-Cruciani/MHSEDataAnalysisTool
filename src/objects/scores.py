@@ -63,6 +63,12 @@ class summary:
         self.TtestLowerBoundDiameterANDLowerBoundDiameterGT = None
         self.TtestTotalCouplesAndTotalCouplesGT = None
 
+        # Wilcoxon Test values
+        self.WilcoxonAvgDistanceAndAvgDistanceGT = None
+        self.WilcoxonEffectiveDiameterAndEffectiveDiameterGT = None
+        self.WilcoxonLowerBoundDiameterANDLowerBoundDiameterGT = None
+        self.WilcoxonTotalCouplesAndTotalCouplesGT = None
+
         # Confidence intervall
 
         self.ciAvgDistance = None
@@ -286,7 +292,6 @@ class summary:
     # }
 
     def set_all_ground_truth(self, ground_truth):
-
         self.avgDistanceGT = ground_truth['avg_distance']
         self.effectiveDiameterGT = ground_truth['effective_diameter']
         self.lowerBoundDiameterGT = ground_truth['diameter']
@@ -409,7 +414,42 @@ class summary:
     #     return(self.totalCouplesResidualSample)
 
 
+    def wilcoxon_test(self):
+        wilcoxon = ro.r['wilcox.test']
+        if (self.all_equal(self.avgDistance) == False):
+            xAvgDistance = ro.vectors.FloatVector(self.avgDistance)
+            resAvgDistance = wilcoxon(xAvgDistance, mu=self.avgDistanceGT, paired=False, alternative="two.sided",
+                                   conflevel=0.95)
+            self.WilcoxonAvgDistanceAndAvgDistanceGT = resAvgDistance.rx2('p.value')[0]
 
+        else:
+            self.WilcoxonAvgDistanceAndAvgDistanceGT = 1
+        if (self.all_equal(self.effectiveDiameter) == False):
+            xEffectiveDiameter = ro.vectors.FloatVector(self.effectiveDiameter)
+            resEffectiveDiameter = wilcoxon(xEffectiveDiameter, mu=self.effectiveDiameterGT, paired=False,
+                                         alternative="two.sided",
+                                         conflevel=0.95)
+            self.WilcoxonEffectiveDiameterAndEffectiveDiameterGT = resEffectiveDiameter.rx2('p.value')[0]
+        else:
+
+            self.WilcoxonEffectiveDiameterAndEffectiveDiameterGT = 1
+        if (self.all_equal(self.lowerBoundDiameter) == False):
+
+            xLowerBoundDiameter = ro.vectors.FloatVector(self.lowerBoundDiameter)
+            resLowerBoundDiameter = wilcoxon(xLowerBoundDiameter, mu=self.lowerBoundDiameterGT, paired=False,
+                                          alternative="two.sided",
+                                          conflevel=0.95)
+            self.WilcoxonLowerBoundDiameterANDLowerBoundDiameterGT = resLowerBoundDiameter.rx2('p.value')[0]
+        else:
+            self.WilcoxonLowerBoundDiameterANDLowerBoundDiameterGT = 1
+        if (self.all_equal(self.totalCouples) == False):
+
+            xTotalCouples = ro.vectors.FloatVector(self.totalCouples)
+            resTotalCouples = wilcoxon(xTotalCouples, mu=float(self.totalCouplesGT), paired=False, alternative="two.sided",
+                                    conflevel=0.95)
+            self.WilcoxonTotalCouplesAndTotalCouplesGT = resTotalCouples.rx2('p.value')[0]
+        else:
+            self.WilcoxonTotalCouplesAndTotalCouplesGT = 1
 
 
     def get_all_Ttests(self):
@@ -419,5 +459,15 @@ class summary:
                 "effective_diameter": self.TtestEffectiveDiameterAndEffectiveDiameterGT,
                 "diameter": self.TtestLowerBoundDiameterANDLowerBoundDiameterGT,
                 "total_couples": self.TtestTotalCouplesAndTotalCouplesGT
+            }
+        )
+
+    def get_all_WilcoxonTest(self):
+        return (
+            {
+                "avg_distance": self.WilcoxonAvgDistanceAndAvgDistanceGT,
+                "effective_diameter": self.WilcoxonEffectiveDiameterAndEffectiveDiameterGT,
+                "diameter": self.WilcoxonLowerBoundDiameterANDLowerBoundDiameterGT,
+                "total_couples": self.WilcoxonTotalCouplesAndTotalCouplesGT
             }
         )
