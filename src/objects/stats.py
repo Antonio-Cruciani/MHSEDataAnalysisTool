@@ -2,9 +2,9 @@ import numpy as np
 
 class resultsStats:
 
-    def __init__(self, collisionTable,lastHops ,numNodes,seedList,seed = 256,threshold = 0.9):
+    def __init__(self, collisionTable,lastHops ,numNodes,seedList,time,seed = 256,threshold = 0.9):
         self.threshold = threshold
-
+        self.time = time
         self.seed = seed
         self.maxHop = max(lastHops[0:self.seed])
         if(type(collisionTable) == list):
@@ -58,7 +58,6 @@ class resultsStats:
     def totalCouples(self):
 
         overallCollsions = self.collsionTable[str(self.maxHop)][0:self.seed]
-
         numTotalCollisions = sum(overallCollsions)
         totalCouplesReachable = numTotalCollisions * self.numNodes / self.seed
 
@@ -144,6 +143,7 @@ class resultsStats:
             additionalInfo['effective_diameter'] = self.effectiveDiameter
             additionalInfo['treshold'] = self.threshold
             additionalInfo['num_seeds'] = self.seed
+            additionalInfo['time'] = self.time
             #additionalInfo['seedsList'] = self.transform_seedlist(self.completeSeedList)
         else:
             additionalInfo ={
@@ -154,6 +154,8 @@ class resultsStats:
                 'effective_diameter':self.effectiveDiameter,
                 'treshold':self.threshold,
                 'num_seeds':self.seed,
+                'time': self.time
+
                 #'seedsList':self.transform_seedlist(self.completeSeedList)
 
             }

@@ -17,7 +17,7 @@ class summary:
         self.lowerBoundDiameter = None
         self.totalCouples = None
         self.maxMemoryUsed = None
-
+        self.times = None
         # Mean Values
 
         self.avgDistanceSampleMean = None
@@ -25,6 +25,10 @@ class summary:
         self.lowerBoundDiameterSampleMean = None
         self.totalCouplesSampleMean = None
         self.maxMemoryUsedSampleMean = None
+
+        self.avgTime = None
+
+        self.stdTime = None
 
         # Standard Deviation
 
@@ -77,7 +81,7 @@ class summary:
         self.ciTotalCouples = None
 
     def SampleMeans(self, avg_distance_list=[], effective_diameter_list=[], lowerbound_diamter_list=[],
-                    total_coumples_list=[], max_memory_used_list=[]):
+                    total_coumples_list=[], max_memory_used_list=[],time = []):
 
         if (avg_distance_list):
             self.avgDistance = avg_distance_list
@@ -98,6 +102,10 @@ class summary:
         if (max_memory_used_list):
             self.maxMemoryUsed = max_memory_used_list
             self.maxMemoryUsedSampleMean = sum(max_memory_used_list) / len(max_memory_used_list)
+
+        if(time):
+            self.times = time
+            self.avgTime = sum(self.times)/len(self.times)
 
 
     def StandardDeviations(self):
@@ -144,6 +152,14 @@ class summary:
                 self.maxMemoryUsedStd += mt.pow(elem - self.maxMemoryUsedSampleMean, 2)
             self.maxMemoryUsedStd = self.maxMemoryUsedStd / len(self.maxMemoryUsed)
             self.maxMemoryUsedSampleStd = mt.sqrt(self.maxMemoryUsedStd)
+        if(self.avgTime != None):
+            self.stdTime = 0
+            for elem in self.times:
+                self.stdTime += mt.pow(elem - self.avgTime, 2)
+            self.stdTime = self.stdTime / len(self.times)
+            self.stdTime = mt.sqrt(self.stdTime)
+
+
 
     def Residuals(self):
 
@@ -395,6 +411,10 @@ class summary:
         return (self.ciLowerBoundDiameter)
     def get_ciTotalCouples(self):
         return (self.ciTotalCouples)
+    def get_avg_time(self):
+        return (self.avgTime)
+    def get_std_time(self):
+        return (self.stdTime)
 
 
 

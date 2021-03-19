@@ -9,7 +9,7 @@ from objects.scores import summary
 
 
 
-def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = False,dataframe = False,LabelPath = None,rounding = 5):
+def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = True,dataframe = True,LabelPath = None,rounding = 5):
 
     experiments = {}
     statistics = {}
@@ -66,6 +66,8 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                 experiments[(algo,direction,seed,"diameter")] = []
                 experiments[(algo,direction,seed,"total_couples")] = []
                 experiments[(algo,direction,seed,"memory_used")] = []
+                experiments[(algo,direction,seed,"time")] = []
+
 
 
     for elem in data:
@@ -76,6 +78,8 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
         experiments[(elem['algorithm'],elem['direction'],elem['num_seeds'],"diameter")].append(elem['diameter'])
         experiments[(elem['algorithm'],elem['direction'],elem['num_seeds'],"total_couples")].append(elem['total_couples'])
         experiments[(elem['algorithm'],elem['direction'],elem['num_seeds'],"memory_used")].append(elem['memory_used'])
+        experiments[(elem['algorithm'],elem['direction'],elem['num_seeds'],"time")].append(elem['time'])
+
 
 
     # Building a dictionary for the statistics
@@ -89,7 +93,9 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
 
                 statistics[(algo,direction,seed)].SampleMeans(experiments[(algo,direction,seed,"avg_distance")],experiments[(algo,direction,seed,"effective_diameter")],
                                                             experiments[(algo,direction,seed,"diameter")],
-                                                            experiments[(algo,direction,seed,"total_couples")],experiments[(algo,direction,seed,"memory_used")]
+                                                            experiments[(algo,direction,seed,"total_couples")],experiments[(algo,direction,seed,"memory_used")],
+                                                              experiments[(algo, direction, seed, "time")]
+
                                                             )
 
                 results[(algo,direction,seed,"MeanAvgDistance")] = [statistics[(algo,direction,seed)].get_avgDistanceSampleMean()]
@@ -97,6 +103,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                 results[(algo,direction,seed,"MeanLowerBoundDiameter")] = [statistics[(algo,direction,seed)].get_lowerBoundDiameterSampleMean()]
                 results[(algo,direction,seed,"MeanTotalCouples")] = [statistics[(algo,direction,seed)].get_totalCouplesSampleMean()]
                 results[(algo,direction,seed,"MeanMaxMemoryUsed")] = [statistics[(algo,direction,seed)].get_maxMemoryUsedSampleMean()]
+                results[(algo,direction,seed,"avgTime")] = [statistics[(algo,direction,seed)].get_avg_time()]
 
 
                 if(std):
@@ -114,6 +121,9 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
 
                     results[(algo, direction, seed, "MeanMaxMemoryUsed")].append(
                         statistics[(algo, direction, seed)].get_maxMemoryUsedStd())
+
+                    results[(algo, direction, seed, "avgTime")].append(
+                        statistics[(algo, direction, seed)].get_std_time())
 
                 if(GroundTruthPath != None):
                     statistics[(algo, direction, seed)].set_all_ground_truth(groundTruth)
@@ -151,7 +161,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                     head.extend(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance","pValueAvgDistance","pvalWilcoxonAvgDistance","ciAvgDistance",
                 "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter","pValueEffectiveDiameter","pvalWilcoxonEffectiveDiameter","ciEffectiveDiameter",
                 "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter","pValueLowerBoundDiameter","pvalWilcoxonLowerBoundDiameter","ciLowerBoundDiameter",
-                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples","pvalWilcoxonTotalCouples","CITotalCouples"])
+                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","pValueTotalCouples","pvalWilcoxonTotalCouples","CITotalCouples","avg_time","std_time"])
                     elements = []
                     for algo in algo_list:
                         for direction in direction_list:
@@ -189,14 +199,15 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "Wilcoxon")]['total_couples'],
                                     results[(algo, direction, seed, "confidence_Interval")]['total_couples'],
 
-
+                                    results[(algo, direction, seed, "avgTime")][0],
+                                    results[(algo, direction, seed, "avgTime")][1]
                                 ])
 
                 else:
                     head.extend(["groundTruthAvgDistance","sampleMeanAvgDistance","stdAvgDistance","residualAvgDistance",
                 "groundTruthEffectiveDiameter","sampleMeanEffectiveDiameter","stdEffectiveDiameter","residualEffectiveDiameter",
                 "groundTruthLowerBoundDiameter","sampleMeanLowerBoundDiameter","stdLowerBoundDiameter","residualLowerBoundDiameter",
-                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples"])
+                "groundTruthTotalCouples","sampleMeanTotalCouples","stdTotalCouples","residualTotalCouples","avg_time","std_time"])
                     elements = []
                     for algo in algo_list:
                         for direction in direction_list:
@@ -217,7 +228,10 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     groundTruth['total_couples'],
                                     results[(algo, direction, seed, "MeanTotalCouples")][0],
                                     results[(algo, direction, seed, "MeanTotalCouples")][1],
-                                    results[(algo, direction, seed, "residuals")]["total_couples"]
+                                    results[(algo, direction, seed, "residuals")]["total_couples"],
+
+                                    results[(algo, direction, seed, "avgTime")][0],
+                                    results[(algo, direction, seed, "avgTime")][1]
                                 ])
             else:
                 head.extend([ "sampleMeanAvgDistance", "stdAvgDistance", "residualAvgDistance",
@@ -226,7 +240,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                              "sampleMeanLowerBoundDiameter", "stdLowerBoundDiameter",
                              "residualLowerBoundDiameter",
                               "sampleMeanTotalCouples", "stdTotalCouples",
-                             "residualTotalCouples"])
+                             "residualTotalCouples","avg_time","std_time"])
                 elements = []
                 for algo in algo_list:
                     for direction in direction_list:
@@ -240,7 +254,9 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                 results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
                                 results[(algo, direction, seed, "MeanLowerBoundDiameter")][1],
                                 results[(algo, direction, seed, "MeanTotalCouples")][0],
-                                results[(algo, direction, seed, "MeanTotalCouples")][1]
+                                results[(algo, direction, seed, "MeanTotalCouples")][1],
+                                results[(algo, direction, seed, "avgTime")][0],
+                                results[(algo, direction, seed, "avgTime")][1]
                             ])
         else:
             if (GroundTruthPath):
@@ -253,7 +269,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                          "groundTruthLowerBoundDiameter", "sampleMeanLowerBoundDiameter",
                          "residualLowerBoundDiameter", "pValueLowerBoundDiameter",
                          "groundTruthTotalCouples", "sampleMeanTotalCouples", "residualTotalCouples",
-                         "pValueTotalCouples"])
+                         "pValueTotalCouples","avg_time","std_time"])
                     elements = []
                     for algo in algo_list:
                         for direction in direction_list:
@@ -274,7 +290,10 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     groundTruth['total_couples'],
                                     results[(algo, direction, seed, "MeanTotalCouples")][0],
                                     results[(algo, direction, seed, "residuals")]["total_couples"],
-                                    results[(algo, direction, seed, "Ttest")]['total_couples']
+                                    results[(algo, direction, seed, "Ttest")]['total_couples'],
+
+                                    results[(algo, direction, seed, "avgTime")][0],
+                                    results[(algo, direction, seed, "avgTime")][1]
 
                                 ])
 
@@ -286,7 +305,7 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                          "groundTruthLowerBoundDiameter", "sampleMeanLowerBoundDiameter",
                          "residualLowerBoundDiameter",
                          "groundTruthTotalCouples", "sampleMeanTotalCouples",
-                         "residualTotalCouples"])
+                         "residualTotalCouples","avg_time","std_time"])
                     elements = []
                     for algo in algo_list:
                         for direction in direction_list:
@@ -303,7 +322,10 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                     results[(algo, direction, seed, "residuals")]["diameter"],
                                     groundTruth['total_couples'],
                                     results[(algo, direction, seed, "MeanTotalCouples")][0],
-                                    results[(algo, direction, seed, "residuals")]["total_couples"]
+                                    results[(algo, direction, seed, "residuals")]["total_couples"],
+
+                                    results[(algo, direction, seed, "avgTime")][0],
+                                    results[(algo, direction, seed, "avgTime")][1]
                                 ])
             else:
                 head.extend(["sampleMeanAvgDistance",
@@ -312,6 +334,8 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                              "sampleMeanLowerBoundDiameter",
 
                              "sampleMeanTotalCouples",
+                             "avg_time",
+                             "std_time"
                              ])
                 elements = []
 
@@ -324,7 +348,9 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                                 results[(algo, direction, seed, "MeanAvgDistance")][0],
                                 results[(algo, direction, seed, "MeanEffectiveDiameter")][0],
                                 results[(algo, direction, seed, "MeanLowerBoundDiameter")][0],
-                                results[(algo, direction, seed, "MeanTotalCouples")][0]
+                                results[(algo, direction, seed, "MeanTotalCouples")][0],
+                                results[(algo, direction, seed, "avgTime")][0],
+                                results[(algo, direction, seed, "avgTime")][1]
 
                             ])
 
@@ -380,7 +406,10 @@ def read_json(InputPath,OutputPath,GroundTruthPath = None,std = True,Ttest = Fal
                             groundTruth['total_couples'], results[(algo, direction, seed, "MeanTotalCouples")][0],
                             str(results[(algo, direction, seed, "residuals")]["total_couples"])+" " + "(" + str(
                                 results[(algo, direction, seed, "Ttest")]['total_couples']) + ")",
-                            "+ - " + str(results[(algo, direction, seed, "confidence_Interval")]['total_couples'])
+                            "+ - " + str(results[(algo, direction, seed, "confidence_Interval")]['total_couples']),
+
+                            results[(algo, direction, seed, "avgTime")][0],
+                            results[(algo, direction, seed, "avgTime")][1],
 
 
                         ])
