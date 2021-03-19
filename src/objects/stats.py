@@ -4,8 +4,9 @@ class resultsStats:
 
     def __init__(self, collisionTable,lastHops ,numNodes,seedList,time,seed = 256,threshold = 0.9):
         self.threshold = threshold
-        self.time = time
         self.seed = seed
+        self.time = sum(time[0:self.seed])/len(time[0:self.seed])
+
         self.maxHop = max(lastHops[0:self.seed])
         if(type(collisionTable) == list):
             self.collsionTable = self.tansform_to_dic(collisionTable)

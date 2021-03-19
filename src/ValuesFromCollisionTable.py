@@ -21,7 +21,7 @@ def ValuesFromCollisionTable(InputPath,OutputPath,AdditionalInfoPath = None,Seed
     for seed in SeedList:
         for elem in data:
             #print("Test numero = ", i)
-            hoptabProva = resultsStats(elem["collision_table"], elem['last_hops'], elem['nodes'],elem['node_ids'],elem['time'], seed=seed)
+            hoptabProva = resultsStats(elem["collision_table"], elem['last_hops'], elem['nodes'],elem['node_ids'],elem['seeds_time'], seed=seed)
 
             i+=1
             hoptabProva.printStats()
